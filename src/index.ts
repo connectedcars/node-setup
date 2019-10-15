@@ -7,6 +7,8 @@ const execFile = util.promisify(childProcess.execFile)
 const copyFile = util.promisify(fs.copyFile)
 const readFile = util.promisify(fs.readFile)
 
+// TODO: look into making this an ignore list
+
 const templateFiles = ['.eslintrc', '.babelrc', 'tsconfig.json']
 const templatePackages = [
   '@babel/cli',
@@ -23,6 +25,16 @@ const templatePackages = [
   'eslint-plugin-prettier',
   'typescript',
   'prettier'
+]
+
+// TODO: implement
+const templateScripts = [
+  'test',
+  'build',
+  'build:src:js',
+  'build:types',
+  'lint',
+  'lint:fix'
 ]
 
 interface PackageJson {
@@ -81,6 +93,7 @@ export async function processCommand(
           }
         }
       }
+      // TODO: replace package.json with the dependencies instead and run npm install
       const npmResult = await execFile('npm', ['install', '--save-dev', ...missingPackages], {
         cwd: target
       })
@@ -88,6 +101,8 @@ export async function processCommand(
       if (npmResult.stderr) {
         console.error(npmResult.stderr)
       }
+      // TODO: Inject default scripts from template
+
       break
     }
     default: {
