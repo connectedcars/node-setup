@@ -13,8 +13,7 @@
     "build:bin:js": "babel bin --out-dir ./build/dist/bin --extensions '.ts' --source-maps --ignore '**/*.d.ts','src/**/*.test.ts'",
     "build:types": "tsc --emitDeclarationOnly",
     "lint": "eslint './src/**/*.{ts,tsx}'",
-    "lint:fix": "eslint --fix './src/**/*.{ts,tsx}'",
-    "prepack": "npm run build && mv ./build/dist/src/* ./"
+    "lint:fix": "eslint --fix './src/**/*.{ts,tsx}'"
   },
   "repository": {
     "type": "git",
