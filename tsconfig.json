@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "lib": ["esnext", "esnext.bigint"],
+    "esModuleInterop": true, // Use ES6 imports not TS own standard
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "moduleResolution": "node",
+    "allowJs": false,
+    "module": "es6",
+    "declaration": true,
+    "sourceMap": true,
+    "outDir": "build/dist",
+    "rootDirs": ["src"],
+    "incremental": true
+  },
+  "exclude": [
+    "node_modules",
+    "build",
+    "coverage"
+  ]
+}

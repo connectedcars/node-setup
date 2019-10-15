@@ -1,0 +1,49 @@
+{
+  "name": "setup-test-package",
+  "version": "1.0.0",
+  "description": "Test package using setup",
+  "main": "build/dist/src/index.js",
+  "engines": {
+    "node": ">=10.15.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "npm run build:types && npm run build:js",
+    "build:js": "babel ./ --only 'src/' --out-dir ./build/dist/ --extensions '.ts' --source-maps  --ignore '**/*.d.ts'",
+    "build:types": "tsc --emitDeclarationOnly",
+    "lint": "eslint './src/**/*.{ts,tsx}'",
+    "lint:fix": "eslint --fix './src/**/*.{ts,tsx}'",
+    "prepack": "npm run build && mv ./build/dist/src/* ./"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/connectedcars/node-setup.git"
+  },
+  "author": "Troels Liebe Bentsen <troels@connectedcars.dk>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/connectedcars/node-setup/issues"
+  },
+  "homepage": "https://github.com/connectedcars/node-setup#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "@connectedcars/setup": "file:../",
+    "@babel/cli": "^7.6.4",
+    "@babel/core": "^7.6.4",
+    "@babel/plugin-proposal-class-properties": "^7.5.5",
+    "@babel/plugin-proposal-numeric-separator": "^7.2.0",
+    "@babel/preset-env": "^7.6.3",
+    "@babel/preset-typescript": "^7.6.0",
+    "@types/node": "^12.7.12",
+    "@typescript-eslint/eslint-plugin": "^2.4.0",
+    "@typescript-eslint/parser": "^2.4.0",
+    "eslint": "^6.5.1",
+    "eslint-config-prettier": "^6.4.0",
+    "eslint-plugin-prettier": "^3.1.1",
+    "typescript": "^3.6.4",
+    "prettier": "^1.18.2",
+    "@types/jest": "^24.0.19",
+    "babel-jest": "^24.9.0",
+    "jest": "^24.9.0"
+  }
+}
