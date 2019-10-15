@@ -8,8 +8,9 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "npm run build:types && npm run build:js",
-    "build:js": "babel ./ --only 'src/' --out-dir ./build/dist/ --extensions '.ts' --source-maps  --ignore '**/*.d.ts'",
+    "build": "npm run build:types && npm run build:src:js && npm run build:bin:js",
+    "build:src:js": "babel src --out-dir ./build/dist/src --extensions '.ts' --source-maps --ignore '**/*.d.ts','src/**/*.test.ts'",
+    "build:bin:js": "babel bin --out-dir ./build/dist/bin --extensions '.ts' --source-maps --ignore '**/*.d.ts','src/**/*.test.ts'",
     "build:types": "tsc --emitDeclarationOnly",
     "lint": "eslint './src/**/*.{ts,tsx}'",
     "lint:fix": "eslint --fix './src/**/*.{ts,tsx}'",
