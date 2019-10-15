@@ -53,8 +53,18 @@ settings.json:
 {
   "typescript.tsdk": "node_modules/typescript/lib",
   "eslint.enable": true,
-  "tslint.enable": false,
   "eslint.autoFixOnSave": true,
+  "eslint.validate": [
+    {
+      "language": "javascript",
+      "autoFix": true
+    },
+    {
+      "language": "typescript",
+      "autoFix": true
+    }
+  ],
+  "tslint.enable": false,
   "files.autoSave": "off",
   "files.exclude": {
     "**/.git": true,
