@@ -3,7 +3,7 @@
 import fs from 'fs'
 import util from 'util'
 import path from 'path'
-import { processCommand } from '../src/index'
+import { initTarget } from '../src/index'
 
 const fileAccess = util.promisify(fs.access)
 
@@ -30,7 +30,16 @@ async function main(argv: string[]) {
   const command = argv[2]
   const force = false
   const templatePath = process.env['TEMPLATE_PATH'] ? process.env['TEMPLATE_PATH'] : await getTemplatePath()
-  await processCommand(command, templatePath, process.cwd(), force)
+
+  switch (command) {
+    case 'init': {
+      await initTarget(templatePath, process.cwd(), force)
+      break
+    }
+    default: {
+      throw new Error(`Unknown command ${command}`)
+    }
+  }
 }
 
 main(process.argv).catch(e => {

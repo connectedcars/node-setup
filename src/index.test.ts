@@ -4,19 +4,26 @@ import path from 'path'
 import crypto from 'crypto'
 import util from 'util'
 import childProcess from 'child_process'
-import { processCommand } from './index'
+import { initTarget } from './index'
 
 const execFile = util.promisify(childProcess.execFile)
 const mkdir = util.promisify(fs.mkdir)
+const readFile = util.promisify(fs.readFile)
 
 describe(`setup`, () => {
   it('init', async () => {
     const tmpdir = os.tmpdir() + path.sep + crypto.randomBytes(8).toString('hex')
     await mkdir(tmpdir)
-    const npmResult = await execFile('npm', ['init', '-y'], {
+    const npmInitRes = await execFile('npm', ['init', '-y'], {
       cwd: tmpdir
     })
-    console.log(npmResult.stdout)
-    await processCommand('init', 'template/', tmpdir)
+    console.log(npmInitRes.stdout)
+    await initTarget('template/', tmpdir)
+    const packageJSON = (await readFile(`${tmpdir}/package.json`)).toString('utf8')
+    console.log(packageJSON)
+    const npmInstallResult = await execFile('npm', ['install'], {
+      cwd: tmpdir
+    })
+    console.log(npmInstallResult.stdout)
   }, 30000)
 })
