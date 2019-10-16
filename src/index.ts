@@ -18,6 +18,9 @@ interface PackageJson {
   scripts: {
     [key: string]: string
   }
+  engines: {
+    [key: string]: string
+  }
   babel?: {}
   jest?: {}
 }
@@ -36,12 +39,15 @@ export async function copyTemplateFiles(
   ignoreFiles: string[],
   force = false
 ): Promise<void> {
-  for (const file in await readdir(`${templatePath}`)) {
-    if (!ignoreFiles.includes(file)) {
+  // TODO: Also handle folders like .vscode
+  const files = await readdir(`${templatePath}`, { withFileTypes: true })
+  for (const file of files) {
+    if (ignoreFiles.includes(file.name) || file.isDirectory()) {
       continue
     }
+    console.log(`  ${file.name}`)
     const flags = force ? 0 : fs.constants.COPYFILE_EXCL
-    await copyFile(`${templatePath}/${file}`, `${target}/${file}`, flags).catch(() => {
+    await copyFile(`${templatePath}/${file.name}`, `${target}/${file.name}`, flags).catch(() => {
       // TODO: Check that it's not because of permissions issues
       console.log(`skipping '${file}' because it already exists`)
     })
@@ -68,6 +74,12 @@ export async function initTarget(templatePath: string, target: string, force = f
     if (force || !packageJson.scripts[scriptName]) {
       packageJson.scripts[scriptName] = templatePackageJson.scripts[scriptName]
     }
+  }
+  packageJson.engines = templatePackageJson.engines
+  // Remove old configs
+  if (force) {
+    delete packageJson.babel
+    delete packageJson.jest
   }
 
   // TODO: Do minimal sorting when writing out package.json:

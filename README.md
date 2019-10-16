@@ -2,6 +2,39 @@
 
 Connected Cars JavaScript/TypeScript development setup
 
+## Use
+
+``` bash
+npm install https://github.com/connectedcars/node-setup
+```
+
+### Automatic
+
+Don't overwrite existing files:
+
+``` bash
+./node_modules/.bin/setup init
+```
+
+Overwrite and remove old configurations:
+
+``` bash
+./node_modules/.bin/setup init-force
+```
+
+### Manual
+
+Extend existing configurations from node_modules/setup:
+
+* [Babel](./template/.babelrc)
+* [ESlint](./template/.eslintrc)
+* [Jest](./template/jest.config.js)
+* [TypeScript](./template/tsconfig.json)
+
+And manually install needed dependencies:
+
+* [package.json](./template/package.json)
+
 ## VSCode
 
 launch.json:

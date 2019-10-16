@@ -28,12 +28,15 @@ async function main(argv: string[]) {
     process.exit(255)
   }
   const command = argv[2]
-  const force = false
   const templatePath = process.env['TEMPLATE_PATH'] ? process.env['TEMPLATE_PATH'] : await getTemplatePath()
 
   switch (command) {
     case 'init': {
-      await initTarget(templatePath, process.cwd(), force)
+      await initTarget(templatePath, process.cwd(), false)
+      break
+    }
+    case 'init-force': {
+      await initTarget(templatePath, process.cwd(), true)
       break
     }
     default: {

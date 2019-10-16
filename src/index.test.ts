@@ -12,6 +12,7 @@ const readFile = util.promisify(fs.readFile)
 
 describe(`setup`, () => {
   it('init', async () => {
+    // TODO: Check output of each command
     const tmpdir = os.tmpdir() + path.sep + crypto.randomBytes(8).toString('hex')
     await mkdir(tmpdir)
     const npmInitRes = await execFile('npm', ['init', '-y'], {
@@ -21,6 +22,10 @@ describe(`setup`, () => {
     await initTarget('template/', tmpdir)
     const packageJSON = (await readFile(`${tmpdir}/package.json`)).toString('utf8')
     console.log(packageJSON)
+    const lsRes = await execFile('ls', ['-la'], {
+      cwd: tmpdir
+    })
+    console.log(lsRes.stdout)
     const npmInstallResult = await execFile('npm', ['install'], {
       cwd: tmpdir
     })
