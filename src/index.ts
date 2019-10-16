@@ -28,7 +28,7 @@ const templatePackages = [
 ]
 
 // TODO: implement
-const templateScripts = ['test', 'build', 'build:src:js', 'build:types', 'lint', 'lint:fix']
+// const templateScripts = ['test', 'build', 'build:src:js', 'build:types', 'lint', 'lint:fix']
 
 interface PackageJson {
   devDependencies: {

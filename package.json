@@ -15,8 +15,8 @@
     "build:src:js": "babel src --out-dir ./build/dist/src --extensions '.ts' --source-maps --ignore '**/*.d.ts','src/**/*.test.ts'",
     "build:bin:js": "babel bin --out-dir ./build/dist/bin --extensions '.ts' --source-maps --ignore '**/*.d.ts','src/**/*.test.ts'",
     "build:types": "tsc --emitDeclarationOnly",
-    "lint": "eslint './src/**/*.{ts,tsx}'",
-    "lint:fix": "eslint --fix './src/**/*.{ts,tsx}'",
+    "lint": "eslint './src/**/*.{ts,tsx}' './bin/**/*.{ts,tsx}'",
+    "lint:fix": "eslint --fix './src/**/*.{ts,tsx}' './bin/**/*.{ts,tsx}'",
     "prepack": "npm run build"
   },
   "repository": {
