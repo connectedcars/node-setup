@@ -7,6 +7,13 @@ const execFile = util.promisify(childProcess.execFile)
 const copyFile = util.promisify(fs.copyFile)
 const readFile = util.promisify(fs.readFile)
 
+// TODO: Do minimal sorting when writing out package.json:
+// * https://github.com/npm/cli/blob/4c65cd952bc8627811735bea76b9b110cc4fc80e/lib/install/update-package-json.js
+// * https://github.com/domenic/sorted-object/blob/master/lib/sorted-object.js
+// * https://github.com/substack/json-stable-stringify
+
+// TODO: Write atomic: https://github.com/connectedcars/firmware/blob/80adaab2adb2b703049073a6d77aeca535ca7b1f/src/app/util/fsutils.ts
+
 // TODO: look into making this an ignore list
 
 const templateFiles = ['.eslintrc', '.babelrc', 'tsconfig.json']
