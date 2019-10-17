@@ -32,7 +32,7 @@ export async function copyTemplateFiles(
   templatePath: string,
   target: string,
   ignoreFiles: string[],
-  options: { [key: string]: unknown }
+  options: { [key: string]: unknown } = {}
 ): Promise<void> {
   const force = options.force ? true : false
   const verbose = options.verbose ? true : false
@@ -70,7 +70,7 @@ function sortDependencies(dependencies: StringMap): StringMap {
 export async function initTarget(
   templatePath: string,
   target: string,
-  options: { [key: string]: unknown }
+  options: { [key: string]: unknown } = {}
 ): Promise<void> {
   const force = options.force ? true : false
   const verbose = options.verbose ? true : false
