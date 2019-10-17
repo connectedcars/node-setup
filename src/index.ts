@@ -1,34 +1,13 @@
 import fs from 'fs'
 import util from 'util'
-import { writeFileAtomic, readJsonFile } from './fsutils'
+import { updatePackageJson } from './package-json'
 
 const copyFile = util.promisify(fs.copyFile)
 const readdir = util.promisify(fs.readdir)
 
 const templateFilesIgnore = ['package.json', 'package-lock.json']
-const templatePackagesIgnore = ['@connectedcars/setup', '@types/node']
 
-interface StringMap {
-  [key: string]: string
-}
-interface PackageJson {
-  dependencies: StringMap
-  devDependencies: StringMap
-  scripts: StringMap
-  engines: StringMap
-  babel?: {}
-  jest?: {}
-}
-
-async function readPackageJson(filePath: string): Promise<PackageJson> {
-  const packageJson = (await readJsonFile(filePath)) as PackageJson
-  packageJson.dependencies = packageJson.dependencies ? packageJson.dependencies : {}
-  packageJson.devDependencies = packageJson.devDependencies ? packageJson.devDependencies : {}
-  packageJson.scripts = packageJson.scripts ? packageJson.scripts : {}
-  return packageJson
-}
-
-export async function copyTemplateFiles(
+async function copyTemplateFiles(
   templatePath: string,
   target: string,
   ignoreFiles: string[],
@@ -57,22 +36,11 @@ export async function copyTemplateFiles(
   }
 }
 
-function sortDependencies(dependencies: StringMap): StringMap {
-  const tempDevDependencies: StringMap = {}
-  Object.keys(dependencies)
-    .sort()
-    .forEach(name => {
-      tempDevDependencies[name] = dependencies[name]
-    })
-  return tempDevDependencies
-}
-
 export async function initTarget(
   templatePath: string,
   target: string,
   options: { [key: string]: unknown } = {}
 ): Promise<void> {
-  const force = options.force ? true : false
   const verbose = options.verbose ? true : false
 
   if (verbose) {
@@ -86,35 +54,7 @@ export async function initTarget(
   if (verbose) {
     console.log(`Started updating package.json`)
   }
-  const templatePackageJson = await readPackageJson(`${templatePath}/package.json`)
-  const packageJson = await readPackageJson(`${target}/package.json`)
-
-  // Update devDependencies
-  for (const dependency of Object.keys(templatePackageJson.devDependencies)) {
-    if (templatePackagesIgnore.includes(dependency)) {
-      continue
-    }
-    if (force || !packageJson.devDependencies[dependency]) {
-      const templateVersion = templatePackageJson.devDependencies[dependency]
-      packageJson.devDependencies[dependency] = templateVersion
-    }
-  }
-  packageJson.devDependencies = sortDependencies(packageJson.devDependencies)
-  // Update scripts
-  for (const scriptName of Object.keys(templatePackageJson.scripts)) {
-    if (force || !packageJson.scripts[scriptName]) {
-      packageJson.scripts[scriptName] = templatePackageJson.scripts[scriptName]
-    }
-  }
-  // Update engines
-  packageJson.engines = templatePackageJson.engines
-  // Remove old configs
-  if (force) {
-    delete packageJson.babel
-    delete packageJson.jest
-  }
-
-  await writeFileAtomic(`${target}/package.json`, JSON.stringify(packageJson, null, 2))
+  await updatePackageJson(templatePath, target, options)
   if (verbose) {
     console.log(`Finished updating package.json`)
   }
