@@ -58,7 +58,7 @@ async function main() {
     init: {
       desc: 'Initiates the project',
       fn: async (name: string, sub: string[], options: { [key: string]: any }) => {
-        await initTarget(`${templatesPath}/${options.template}`, process.cwd(), options.parse ? true : false)
+        await initTarget(`${templatesPath}/${options.template}`, process.cwd(), options.force ? true : false)
       }
     }
   }
