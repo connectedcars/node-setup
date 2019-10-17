@@ -13,8 +13,8 @@ const DEFAULT_TEMPLATE = 'node'
 
 async function getTemplatesPath() {
   const pathOptions = [
-    `${__dirname}/../templates/${DEFAULT_TEMPLATE}/package.json`,
-    `${__dirname}/../../../templates/${DEFAULT_TEMPLATE}/package.json`
+    `${__dirname}/../../../templates/${DEFAULT_TEMPLATE}/package.json`,
+    `${__dirname}/../templates/${DEFAULT_TEMPLATE}/package.json`
   ]
   for (let templatePath of pathOptions) {
     templatePath = path.normalize(`${path.dirname(templatePath)}/..`)
