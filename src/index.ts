@@ -39,6 +39,7 @@ export async function copyTemplateFiles(
   ignoreFiles: string[],
   force = false
 ): Promise<void> {
+  // TODO: Merge with existing files if they already exists
   // TODO: Also handle folders like .vscode
   const files = await readdir(`${templatePath}`, { withFileTypes: true })
   for (const file of files) {
