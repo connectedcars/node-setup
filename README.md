@@ -72,7 +72,7 @@ launch.json:
         "init"
       ],
       "env": {
-        "TEMPLATE_PATH": "${workspaceFolder}/template"
+        "TEMPLATES_PATH": "${workspaceFolder}/templates"
       },
       "internalConsoleOptions": "openOnSessionStart"
     }

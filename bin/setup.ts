@@ -1,16 +1,23 @@
 #!/usr/bin/env node
 
+import args from 'args'
 import fs from 'fs'
 import util from 'util'
 import path from 'path'
 import { initTarget } from '../src/index'
 
+const readdirAsync = util.promisify(fs.readdir)
 const fileAccess = util.promisify(fs.access)
 
-async function getTemplatePath() {
-  const pathOptions = [`${__dirname}/../template/package.json`, `${__dirname}/../../../template/package.json`]
+const DEFAULT_TEMPLATE = 'node'
+
+async function getTemplatesPath() {
+  const pathOptions = [
+    `${__dirname}/../templates/${DEFAULT_TEMPLATE}/package.json`,
+    `${__dirname}/../../../templates/${DEFAULT_TEMPLATE}/package.json`
+  ]
   for (let templatePath of pathOptions) {
-    templatePath = path.dirname(path.normalize(templatePath))
+    templatePath = path.normalize(`${path.dirname(templatePath)}/..`)
     if (
       await fileAccess(templatePath, fs.constants.R_OK)
         .then(() => true)
@@ -22,30 +29,54 @@ async function getTemplatePath() {
   throw Error(`Failed to find template path`)
 }
 
-async function main(argv: string[]) {
-  if (argv.length < 3) {
-    console.log('setup init')
-    process.exit(255)
-  }
-  const command = argv[2]
-  const templatePath = process.env['TEMPLATE_PATH'] ? process.env['TEMPLATE_PATH'] : await getTemplatePath()
+async function main() {
+  const templatesPath = process.env['TEMPLATES_PATH'] ? process.env['TEMPLATES_PATH'] : await getTemplatesPath()
+  const templates = await readdirAsync(templatesPath, 'utf8')
 
-  switch (command) {
-    case 'init': {
-      await initTarget(templatePath, process.cwd(), false)
-      break
+  args.options([
+    {
+      name: 'force',
+      description: 'Whether to override/remove existing configuration',
+      init: value => (value ? true : false)
+    },
+    {
+      name: 'template',
+      description: 'Which template to use',
+      defaultValue: DEFAULT_TEMPLATE,
+      init: value => {
+        if (!templates.includes(value)) {
+          console.log(`Invalid template argument: "${value}"`)
+          process.exit(255)
+        }
+        return value
+      }
     }
-    case 'init-force': {
-      await initTarget(templatePath, process.cwd(), true)
-      break
+  ])
+
+  const commands: {
+    [key: string]: { desc: string; fn: (name: string, sub: string[], options: { [key: string]: any }) => void }
+  } = {
+    init: {
+      desc: 'Initiates the project',
+      fn: async (name: string, sub: string[], options: { [key: string]: any }) => {
+        await initTarget(`${templatesPath}/${options.template}`, process.cwd(), options.parse)
+      }
     }
-    default: {
-      throw new Error(`Unknown command ${command}`)
-    }
+  }
+  for (const cmd in commands) {
+    const { desc, fn } = commands[cmd]
+    args.command(cmd, desc, fn)
+  }
+
+  args.parse(process.argv)
+
+  if (args.sub.length === 0 || !commands[args.sub[0]]) {
+    console.log(`Unknown command: "${args.sub[0] || ''}"`)
+    process.exit(255)
   }
 }
 
-main(process.argv).catch(e => {
+main().catch(e => {
   console.error(e)
   process.exit(255)
 })
