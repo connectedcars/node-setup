@@ -6,7 +6,7 @@ import util from 'util'
 import path from 'path'
 import { initTarget } from '../src/index'
 
-const readdirAsync = util.promisify(fs.readdir)
+const readdir = util.promisify(fs.readdir)
 const fileAccess = util.promisify(fs.access)
 
 const DEFAULT_TEMPLATE = 'node'
@@ -31,7 +31,7 @@ async function getTemplatesPath() {
 
 async function main() {
   const templatesPath = process.env['TEMPLATES_PATH'] ? process.env['TEMPLATES_PATH'] : await getTemplatesPath()
-  const templates = await readdirAsync(templatesPath, 'utf8')
+  const templates = await readdir(templatesPath, 'utf8')
 
   args.options([
     {

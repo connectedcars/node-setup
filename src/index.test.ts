@@ -9,6 +9,7 @@ import { initTarget } from './index'
 const execFile = util.promisify(childProcess.execFile)
 const mkdir = util.promisify(fs.mkdir)
 const readFile = util.promisify(fs.readFile)
+const readdir = util.promisify(fs.readdir)
 
 describe(`setup`, () => {
   it('init', async () => {
@@ -30,5 +31,14 @@ describe(`setup`, () => {
       cwd: tmpdir
     })
     console.log(npmInstallResult.stdout)
+    const paths = await readdir(tmpdir)
+    expect(paths).toContain('.babelrc')
+    expect(paths).toContain('.editorconfig')
+    expect(paths).toContain('.eslintrc')
+    expect(paths).toContain('jest.config.js')
+    expect(paths).toContain('node_modules')
+    expect(paths).toContain('package-lock.json')
+    expect(paths).toContain('package.json')
+    expect(paths).toContain('tsconfig.json')
   }, 30000)
 })
