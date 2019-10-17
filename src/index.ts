@@ -8,19 +8,14 @@ const readdir = util.promisify(fs.readdir)
 const templateFilesIgnore = ['package.json', 'package-lock.json']
 const templatePackagesIgnore = ['@connectedcars/setup', '@types/node']
 
+interface StringMap {
+  [key: string]: string
+}
 interface PackageJson {
-  dependencies: {
-    [key: string]: string
-  }
-  devDependencies: {
-    [key: string]: string
-  }
-  scripts: {
-    [key: string]: string
-  }
-  engines: {
-    [key: string]: string
-  }
+  dependencies: StringMap
+  devDependencies: StringMap
+  scripts: StringMap
+  engines: StringMap
   babel?: {}
   jest?: {}
 }
@@ -55,6 +50,16 @@ export async function copyTemplateFiles(
   }
 }
 
+const sortDependencies = (dependencies: StringMap): StringMap => {
+  const tempDevDependencies: StringMap = {}
+  Object.keys(dependencies)
+    .sort()
+    .forEach(name => {
+      tempDevDependencies[name] = dependencies[name]
+    })
+  return tempDevDependencies
+}
+
 export async function initTarget(templatePath: string, target: string, force = false): Promise<void> {
   console.log(`Copy template files:`)
   await copyTemplateFiles(templatePath, target, templateFilesIgnore, force)
@@ -62,6 +67,8 @@ export async function initTarget(templatePath: string, target: string, force = f
   console.log(`Fix package.json`)
   const templatePackageJson = await readPackageJson(`${templatePath}/package.json`)
   const packageJson = await readPackageJson(`${target}/package.json`)
+
+  // Update devDependencies
   for (const dependency of Object.keys(templatePackageJson.devDependencies)) {
     if (templatePackagesIgnore.includes(dependency)) {
       continue
@@ -71,11 +78,14 @@ export async function initTarget(templatePath: string, target: string, force = f
       packageJson.devDependencies[dependency] = templateVersion
     }
   }
+  packageJson.devDependencies = sortDependencies(packageJson.devDependencies)
+  // Update scripts
   for (const scriptName of Object.keys(templatePackageJson.scripts)) {
     if (force || !packageJson.scripts[scriptName]) {
       packageJson.scripts[scriptName] = templatePackageJson.scripts[scriptName]
     }
   }
+  // Update engines
   packageJson.engines = templatePackageJson.engines
   // Remove old configs
   if (force) {
@@ -83,9 +93,5 @@ export async function initTarget(templatePath: string, target: string, force = f
     delete packageJson.jest
   }
 
-  // TODO: Do minimal sorting when writing out package.json:
-  // * https://github.com/npm/cli/blob/4c65cd952bc8627811735bea76b9b110cc4fc80e/lib/install/update-package-json.js
-  // * https://github.com/domenic/sorted-object/blob/master/lib/sorted-object.js
-  // * https://github.com/substack/json-stable-stringify
   await writeFileAtomic(`${target}/package.json`, JSON.stringify(packageJson, null, 2))
 }
