@@ -19,7 +19,7 @@ describe(`setup`, () => {
       cwd: tmpdir
     })
     console.log(npmInitRes.stdout)
-    await initTarget('template/', tmpdir)
+    await initTarget('templates/node/', tmpdir)
     const packageJSON = (await readFile(`${tmpdir}/package.json`)).toString('utf8')
     console.log(packageJSON)
     const lsRes = await execFile('ls', ['-la'], {
