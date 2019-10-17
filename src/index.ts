@@ -32,8 +32,11 @@ export async function copyTemplateFiles(
   templatePath: string,
   target: string,
   ignoreFiles: string[],
-  force = false
+  options: { [key: string]: unknown }
 ): Promise<void> {
+  const force = options.force ? true : false
+  const verbose = options.verbose ? true : false
+
   // TODO: Merge with existing files if they already exists
   // TODO: Also handle folders like .vscode
   const files = await readdir(`${templatePath}`, { withFileTypes: true })
@@ -41,16 +44,20 @@ export async function copyTemplateFiles(
     if (ignoreFiles.includes(file.name) || file.isDirectory()) {
       continue
     }
-    console.log(`  ${file.name}`)
+    if (verbose) {
+      console.log(`  Started copying "${file.name}"`)
+    }
     const flags = force ? 0 : fs.constants.COPYFILE_EXCL
     await copyFile(`${templatePath}/${file.name}`, `${target}/${file.name}`, flags).catch(() => {
       // TODO: Check that it's not because of permissions issues
-      console.log(`skipping '${file}' because it already exists`)
+      if (verbose) {
+        console.log(`  Skipped copying "${file.name}" because it already exists`)
+      }
     })
   }
 }
 
-const sortDependencies = (dependencies: StringMap): StringMap => {
+function sortDependencies(dependencies: StringMap): StringMap {
   const tempDevDependencies: StringMap = {}
   Object.keys(dependencies)
     .sort()
@@ -60,11 +67,25 @@ const sortDependencies = (dependencies: StringMap): StringMap => {
   return tempDevDependencies
 }
 
-export async function initTarget(templatePath: string, target: string, force = false): Promise<void> {
-  console.log(`Copy template files:`)
-  await copyTemplateFiles(templatePath, target, templateFilesIgnore, force)
+export async function initTarget(
+  templatePath: string,
+  target: string,
+  options: { [key: string]: unknown }
+): Promise<void> {
+  const force = options.force ? true : false
+  const verbose = options.verbose ? true : false
 
-  console.log(`Fix package.json`)
+  if (verbose) {
+    console.log(`Started copying template files`)
+  }
+  await copyTemplateFiles(templatePath, target, templateFilesIgnore, options)
+  if (verbose) {
+    console.log(`Finished copying template files`)
+  }
+
+  if (verbose) {
+    console.log(`Started updating package.json`)
+  }
   const templatePackageJson = await readPackageJson(`${templatePath}/package.json`)
   const packageJson = await readPackageJson(`${target}/package.json`)
 
@@ -94,4 +115,7 @@ export async function initTarget(templatePath: string, target: string, force = f
   }
 
   await writeFileAtomic(`${target}/package.json`, JSON.stringify(packageJson, null, 2))
+  if (verbose) {
+    console.log(`Finished updating package.json`)
+  }
 }

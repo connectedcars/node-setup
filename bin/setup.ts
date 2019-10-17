@@ -49,16 +49,23 @@ async function main() {
         }
         return value
       }
+    },
+    {
+      name: 'verbose',
+      description: 'Whether to enable verbose logging'
     }
   ])
 
   const commands: {
-    [key: string]: { desc: string; fn: (name: string, sub: string[], options: { [key: string]: any }) => void }
+    [key: string]: {
+      desc: string
+      fn: (name: string, sub: string[], options: { [key: string]: any }) => void
+    }
   } = {
     init: {
       desc: 'Initiates the project',
       fn: async (name: string, sub: string[], options: { [key: string]: any }) => {
-        await initTarget(`${templatesPath}/${options.template}`, process.cwd(), options.force ? true : false)
+        await initTarget(`${templatesPath}/${options.template}`, process.cwd(), options)
       }
     }
   }
