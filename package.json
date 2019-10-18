@@ -30,8 +30,7 @@
   },
   "homepage": "https://github.com/connectedcars/node-setup#readme",
   "dependencies": {
-    "args": "^5.0.1",
-    "semver": "^6.3.0"
+    "args": "^5.0.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.6.4",
@@ -44,7 +43,6 @@
     "@types/args": "^3.0.0",
     "@types/jest": "^24.0.19",
     "@types/node": "^12.7.12",
-    "@types/semver": "^6.0.2",
     "@typescript-eslint/eslint-plugin": "^2.4.0",
     "@typescript-eslint/parser": "^2.4.0",
     "babel-jest": "^24.9.0",
