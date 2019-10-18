@@ -1,6 +1,6 @@
 import fs from 'fs'
 import util from 'util'
-import log from './log'
+import log, { forceLog } from './log'
 import { updatePackageJson } from './package-json'
 
 const copyFile = util.promisify(fs.copyFile)
@@ -42,8 +42,12 @@ export async function initTarget(
   log(`Finished copying template files`, options)
 
   log(`Started updating package.json`, options)
-  await updatePackageJson(templatePath, target, options)
+  const wasChanged = await updatePackageJson(templatePath, target, options)
   log(`Finished updating package.json`, options)
 
-  // TODO: Tell user to run npm install
+  if (wasChanged) {
+    forceLog(`Dependencies in package.json was changed, run "npm install" to get node_modules up to date`)
+  } else {
+    log(`Dependencies in package.json remained unchanged`)
+  }
 }

@@ -35,7 +35,7 @@ export async function updatePackageJson(
   templatePath: string,
   target: string,
   options: { [key: string]: unknown } = {}
-): Promise<void> {
+): Promise<boolean> {
   const force = options.force ? true : false
 
   log(`  Started reading files`, options)
@@ -45,6 +45,7 @@ export async function updatePackageJson(
 
   // Update devDependencies
   log(`  Started updating "devDependencies"`, options)
+  const existingDevDependencies = JSON.stringify(packageJson.devDependencies)
   for (const dependency of Object.keys(templatePackageJson.devDependencies)) {
     if (templatePackagesIgnore.includes(dependency)) {
       continue
@@ -79,4 +80,7 @@ export async function updatePackageJson(
   log(`  Started updating "package.json"`, options)
   await writeFileAtomic(`${target}/package.json`, JSON.stringify(packageJson, null, 2))
   log(`  Finished updating "package.json"`, options)
+
+  // Return whether devDependencies were changed
+  return existingDevDependencies !== JSON.stringify(packageJson.devDependencies)
 }
