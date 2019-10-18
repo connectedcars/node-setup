@@ -124,7 +124,7 @@ tasks.json:
     "tasks": [
         {
             "type": "npm",
-            "script": "build:bin:js",
+            "script": "build:js",
             "group": "build",
             "problemMatcher": []
         }

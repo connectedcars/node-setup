@@ -11,9 +11,10 @@
   },
   "scripts": {
     "test": "TZ=UTC jest",
-    "build": "npm run build:types && npm run build:src:js && npm run build:bin:js",
-    "build:src:js": "babel src --out-dir ./build/dist/src --extensions '.ts' --source-maps --ignore '**/*.d.ts','src/**/*.test.ts'",
-    "build:bin:js": "babel bin --out-dir ./build/dist/bin --extensions '.ts' --source-maps --ignore '**/*.d.ts','src/**/*.test.ts'",
+    "build": "npm run build:types && npm run build:js",
+    "build:js": "npm run build:js:src && npm run build:js:bin",
+    "build:js:src": "babel src --out-dir ./build/dist/src --extensions '.ts' --source-maps --ignore '**/*.d.ts','src/**/*.test.ts'",
+    "build:js:bin": "babel bin --out-dir ./build/dist/bin --extensions '.ts' --source-maps --ignore '**/*.d.ts','src/**/*.test.ts'",
     "build:types": "tsc --emitDeclarationOnly",
     "lint": "eslint './src/**/*.{ts,tsx}' './bin/**/*.{ts,tsx}'",
     "lint:fix": "eslint --fix './src/**/*.{ts,tsx}' './bin/**/*.{ts,tsx}'",
