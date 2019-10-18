@@ -1,4 +1,5 @@
 import { writeFileAtomic, readJsonFile } from './fsutils'
+import log from './log'
 
 const templatePackagesIgnore = ['@connectedcars/setup', '@types/node']
 
@@ -36,21 +37,14 @@ export async function updatePackageJson(
   options: { [key: string]: unknown } = {}
 ): Promise<void> {
   const force = options.force ? true : false
-  const verbose = options.verbose ? true : false
 
-  if (verbose) {
-    console.log(`  Started reading files`)
-  }
+  log(`  Started reading files`, options)
   const templatePackageJson = await readPackageJson(`${templatePath}/package.json`)
   const packageJson = await readPackageJson(`${target}/package.json`)
-  if (verbose) {
-    console.log(`  Finished reading files`)
-  }
+  log(`  Finished reading files`, options)
 
   // Update devDependencies
-  if (verbose) {
-    console.log(`  Started updating "devDependencies"`)
-  }
+  log(`  Started updating "devDependencies"`, options)
   for (const dependency of Object.keys(templatePackageJson.devDependencies)) {
     if (templatePackagesIgnore.includes(dependency)) {
       continue
@@ -61,46 +55,28 @@ export async function updatePackageJson(
     }
   }
   packageJson.devDependencies = sortDependencies(packageJson.devDependencies)
-  if (verbose) {
-    console.log(`  Finished updating "devDependencies"`)
-  }
+  log(`  Finished updating "devDependencies"`, options)
   // Update scripts
-  if (verbose) {
-    console.log(`  Started updating "scripts"`)
-  }
+  log(`  Started updating "scripts"`, options)
   for (const scriptName of Object.keys(templatePackageJson.scripts)) {
     if (force || !packageJson.scripts[scriptName]) {
       packageJson.scripts[scriptName] = templatePackageJson.scripts[scriptName]
     }
   }
-  if (verbose) {
-    console.log(`  Finished updating "scripts"`)
-  }
+  log(`  Finished updating "scripts"`, options)
   // Update engines
-  if (verbose) {
-    console.log(`  Started updating "engines"`)
-  }
+  log(`  Started updating "engines"`, options)
   packageJson.engines = templatePackageJson.engines
-  if (verbose) {
-    console.log(`  Finished updating "engines"`)
-  }
+  log(`  Finished updating "engines"`, options)
   // Remove old configs
   if (force) {
-    if (verbose) {
-      console.log(`  Started deleting "babel" and "jest"`)
-    }
+    log(`  Started deleting "babel" and "jest"`, options)
     delete packageJson.babel
     delete packageJson.jest
-    if (verbose) {
-      console.log(`  Finished deleting "babel" and "jest"`)
-    }
+    log(`  Finished deleting "babel" and "jest"`, options)
   }
 
-  if (verbose) {
-    console.log(`  Started updating "package.json"`)
-  }
+  log(`  Started updating "package.json"`, options)
   await writeFileAtomic(`${target}/package.json`, JSON.stringify(packageJson, null, 2))
-  if (verbose) {
-    console.log(`  Finished updating "package.json"`)
-  }
+  log(`  Finished updating "package.json"`, options)
 }

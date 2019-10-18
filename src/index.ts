@@ -1,5 +1,6 @@
 import fs from 'fs'
 import util from 'util'
+import log from './log'
 import { updatePackageJson } from './package-json'
 
 const copyFile = util.promisify(fs.copyFile)
@@ -14,7 +15,6 @@ async function copyTemplateFiles(
   options: { [key: string]: unknown } = {}
 ): Promise<void> {
   const force = options.force ? true : false
-  const verbose = options.verbose ? true : false
 
   // TODO: Merge with existing files if they already exists
   // TODO: Also handle folders like .vscode
@@ -23,15 +23,11 @@ async function copyTemplateFiles(
     if (ignoreFiles.includes(file.name) || file.isDirectory()) {
       continue
     }
-    if (verbose) {
-      console.log(`  Started copying "${file.name}"`)
-    }
+    log(`  Started copying "${file.name}"`, options)
     const flags = force ? 0 : fs.constants.COPYFILE_EXCL
     await copyFile(`${templatePath}/${file.name}`, `${target}/${file.name}`, flags).catch(() => {
       // TODO: Check that it's not because of permissions issues
-      if (verbose) {
-        console.log(`  Skipped copying "${file.name}" because it already exists`)
-      }
+      log(`  Skipped copying "${file.name}" because it already exists`, options)
     })
   }
 }
@@ -41,21 +37,13 @@ export async function initTarget(
   target: string,
   options: { [key: string]: unknown } = {}
 ): Promise<void> {
-  const verbose = options.verbose ? true : false
-
-  if (verbose) {
-    console.log(`Started copying template files`)
-  }
+  log(`Started copying template files`, options)
   await copyTemplateFiles(templatePath, target, templateFilesIgnore, options)
-  if (verbose) {
-    console.log(`Finished copying template files`)
-  }
+  log(`Finished copying template files`, options)
 
-  if (verbose) {
-    console.log(`Started updating package.json`)
-  }
+  log(`Started updating package.json`, options)
   await updatePackageJson(templatePath, target, options)
-  if (verbose) {
-    console.log(`Finished updating package.json`)
-  }
+  log(`Finished updating package.json`, options)
+
+  // TODO: Tell user to run npm install
 }

@@ -21,6 +21,17 @@ describe(`setup`, () => {
     })
     console.log(npmInitRes.stdout)
     await initTarget('templates/node/', tmpdir)
+
+    const paths = await readdir(tmpdir)
+    expect(paths).toContain('.babelrc')
+    expect(paths).toContain('.editorconfig')
+    expect(paths).toContain('.eslintrc')
+    expect(paths).toContain('jest.config.js')
+    expect(paths).not.toContain('node_modules')
+    expect(paths).toContain('package.json')
+    expect(paths).not.toContain('package-lock.json')
+    expect(paths).toContain('tsconfig.json')
+
     const packageJSON = (await readFile(`${tmpdir}/package.json`)).toString('utf8')
     console.log(packageJSON)
     const lsRes = await execFile('ls', ['-la'], {
@@ -31,14 +42,5 @@ describe(`setup`, () => {
       cwd: tmpdir
     })
     console.log(npmInstallResult.stdout)
-    const paths = await readdir(tmpdir)
-    expect(paths).toContain('.babelrc')
-    expect(paths).toContain('.editorconfig')
-    expect(paths).toContain('.eslintrc')
-    expect(paths).toContain('jest.config.js')
-    expect(paths).toContain('node_modules')
-    expect(paths).toContain('package-lock.json')
-    expect(paths).toContain('package.json')
-    expect(paths).toContain('tsconfig.json')
   }, 30000)
 })
