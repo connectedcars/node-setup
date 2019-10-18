@@ -10,16 +10,18 @@ npm install --save-dev https://github.com/connectedcars/node-setup
 
 ### Automatic
 
-Don't overwrite existing files:
-
 ``` bash
 ./node_modules/.bin/setup init
 ```
 
-Overwrite and remove old configurations:
+#### Flags
 
-``` bash
-./node_modules/.bin/setup init-force
+```
+-f, --force             Whether to override/remove existing configuration
+-h, --help              Output usage information
+-t, --template [value]  Which template to use (defaults to "node")
+-v, --verbose           Whether to enable verbose logging
+-V, --version           Output the version number
 ```
 
 ### Manual
