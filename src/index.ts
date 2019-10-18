@@ -16,7 +16,6 @@ async function copyTemplateFiles(
 ): Promise<void> {
   const force = options.force ? true : false
 
-  // TODO: Merge with existing files if they already exists
   // TODO: Also handle folders like .vscode
   const files = await readdir(`${templatePath}`, { withFileTypes: true })
   for (const file of files) {
@@ -27,6 +26,7 @@ async function copyTemplateFiles(
     const flags = force ? 0 : fs.constants.COPYFILE_EXCL
     await copyFile(`${templatePath}/${file.name}`, `${target}/${file.name}`, flags).catch(e => {
       if (e.code === 'EEXIST') {
+        // TODO: Merge with existing files if they already exists
         log(`  Skipped copying "${file.name}" because it already exists`, options)
       } else {
         forceLog(`  Failed copying "${file.name}": ${e.message}`)
