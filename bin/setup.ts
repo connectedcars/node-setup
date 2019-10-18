@@ -42,7 +42,7 @@ async function main() {
       name: 'template',
       description: 'Which template to use',
       defaultValue: DEFAULT_TEMPLATE,
-      init: value => {
+      init: (value: string) => {
         if (!templates.includes(value)) {
           console.log(`Invalid template argument: "${value}"`)
           process.exit(255)
