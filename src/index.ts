@@ -25,9 +25,12 @@ async function copyTemplateFiles(
     }
     log(`  Started copying "${file.name}"`, options)
     const flags = force ? 0 : fs.constants.COPYFILE_EXCL
-    await copyFile(`${templatePath}/${file.name}`, `${target}/${file.name}`, flags).catch(() => {
-      // TODO: Check that it's not because of permissions issues
-      log(`  Skipped copying "${file.name}" because it already exists`, options)
+    await copyFile(`${templatePath}/${file.name}`, `${target}/${file.name}`, flags).catch(e => {
+      if (e.code === 'EEXIST') {
+        log(`  Skipped copying "${file.name}" because it already exists`, options)
+      } else {
+        forceLog(`  Failed copying "${file.name}": ${e.message}`)
+      }
     })
   }
 }
