@@ -1,0 +1,4 @@
+bin/**.test.*
+build/
+src/**.test.*
+templates/**/node_modules

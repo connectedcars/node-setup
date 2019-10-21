@@ -90,9 +90,8 @@ describe('setup', () => {
       },
       scripts: {
         test: 'echo "Error: no test specified" && exit 1',
-        build: 'npm run build:types && npm run build:src:js',
-        'build:src:js':
-          "babel src --out-dir ./build/dist/src --extensions '.ts' --source-maps --ignore '**/*.d.ts','src/**/*.test.ts'",
+        build: 'npm run build:types && npm run build:js:src',
+        'build:js:src': expect.stringMatching(/.+/),
         'build:types': 'tsc --emitDeclarationOnly',
         lint: "eslint './src/**/*.{ts,tsx}'",
         'lint:fix': "eslint --fix './src/**/*.{ts,tsx}'"
