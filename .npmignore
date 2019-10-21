@@ -1,4 +1,5 @@
 bin/**.test.*
 build/
+coverage/
 src/**.test.*
 templates/**/node_modules
