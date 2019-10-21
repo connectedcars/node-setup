@@ -143,6 +143,13 @@ describe('setup', () => {
       expect(e && e.stderr).toBeFalsy()
     }
 
+    // Run `npm run lint` and check output
+    try {
+      await execFile('npm', ['run', 'lint'], { cwd: folder })
+    } catch (e) {
+      expect(e && e.stdout).toBeFalsy()
+    }
+
     // Validate npm setup
     const pathsPostInstall = await readdir(folder)
     expect(pathsPostInstall).toContain('node_modules')
