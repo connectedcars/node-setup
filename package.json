@@ -18,7 +18,7 @@
     "build:types": "tsc --emitDeclarationOnly",
     "lint": "eslint './src/**/*.{ts,tsx}' './bin/**/*.{ts,tsx}'",
     "lint:fix": "eslint --fix './src/**/*.{ts,tsx}' './bin/**/*.{ts,tsx}'",
-    "prepack": "npm i && npm run build"
+    "prepack": "rm -rf build && npm i && npm run build"
   },
   "repository": {
     "type": "git",
