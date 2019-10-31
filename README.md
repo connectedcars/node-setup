@@ -5,7 +5,7 @@ Connected Cars JavaScript/TypeScript development setup
 ## Use
 
 ``` bash
-npm install --save-dev https://github.com/connectedcars/node-setup
+npm install --save-dev @connectedcars/setup
 ```
 
 ### Automatic
