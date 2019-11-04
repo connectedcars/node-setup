@@ -142,6 +142,16 @@ describe('setup', () => {
       expect(e && e.stderr).toBeFalsy()
     }
 
+    // Validate both declaration and js files are generated
+    const builtFiles = await readdir(`${folder}/build/dist`)
+    expect(builtFiles).toContain('index.d.ts')
+    expect(builtFiles).toContain('index.test.d.ts')
+    expect(builtFiles).toContain('src')
+
+    const builtSrcFiles = await readdir(`${folder}/build/dist/src`)
+    expect(builtSrcFiles).toContain('index.js')
+    expect(builtSrcFiles).toContain('index.js.map')
+
     // Run `npm run lint` and check output
     try {
       await execFile('npm', ['run', 'lint'], { cwd: folder })
@@ -154,5 +164,5 @@ describe('setup', () => {
     expect(pathsPostInstall).toContain('node_modules')
     expect(pathsPostInstall).toContain('package.json')
     expect(pathsPostInstall).toContain('package-lock.json')
-  }, 30000)
+  }, 60000)
 })

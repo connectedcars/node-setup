@@ -1,3 +1,6 @@
 {
-  "extends": "./node_modules/@connectedcars/setup/tsconfig"
+  "extends": "./node_modules/@connectedcars/setup/tsconfig",
+  "compilerOptions": {
+    "outDir": "build/dist"
+  }
 }
