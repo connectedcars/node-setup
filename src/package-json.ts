@@ -37,6 +37,7 @@ export async function updatePackageJson(
   options: { [key: string]: unknown } = {}
 ): Promise<boolean> {
   const force = options.force ? true : false
+  const onlyDeps = options.onlyDeps ? true : false
 
   log(`  Started reading files`, options)
   const templatePackageJson = await readPackageJson(`${templatePath}/package.json`)
@@ -57,24 +58,27 @@ export async function updatePackageJson(
   }
   packageJson.devDependencies = sortDependencies(packageJson.devDependencies)
   log(`  Finished updating "devDependencies"`, options)
-  // Update scripts
-  log(`  Started updating "scripts"`, options)
-  for (const scriptName of Object.keys(templatePackageJson.scripts)) {
-    if (force || !packageJson.scripts[scriptName]) {
-      packageJson.scripts[scriptName] = templatePackageJson.scripts[scriptName]
+
+  if (!onlyDeps) {
+    // Update scripts
+    log(`  Started updating "scripts"`, options)
+    for (const scriptName of Object.keys(templatePackageJson.scripts)) {
+      if (force || !packageJson.scripts[scriptName]) {
+        packageJson.scripts[scriptName] = templatePackageJson.scripts[scriptName]
+      }
     }
-  }
-  log(`  Finished updating "scripts"`, options)
-  // Update engines
-  log(`  Started updating "engines"`, options)
-  packageJson.engines = templatePackageJson.engines
-  log(`  Finished updating "engines"`, options)
-  // Remove old configs
-  if (force) {
-    log(`  Started deleting "babel" and "jest"`, options)
-    delete packageJson.babel
-    delete packageJson.jest
-    log(`  Finished deleting "babel" and "jest"`, options)
+    log(`  Finished updating "scripts"`, options)
+    // Update engines
+    log(`  Started updating "engines"`, options)
+    packageJson.engines = templatePackageJson.engines
+    log(`  Finished updating "engines"`, options)
+    // Remove old configs
+    if (force) {
+      log(`  Started deleting "babel" and "jest"`, options)
+      delete packageJson.babel
+      delete packageJson.jest
+      log(`  Finished deleting "babel" and "jest"`, options)
+    }
   }
 
   log(`  Started updating "package.json"`, options)

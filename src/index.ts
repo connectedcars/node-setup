@@ -54,3 +54,19 @@ export async function initTarget(
     log(`Dependencies in package.json remained unchanged`)
   }
 }
+
+export async function updateTarget(
+  templatePath: string,
+  target: string,
+  options: { [key: string]: unknown } = {}
+): Promise<void> {
+  log(`Started updating package.json`, options)
+  const wasChanged = await updatePackageJson(templatePath, target, { ...options, force: true, onlyDeps: true })
+  log(`Finished updating package.json`, options)
+
+  if (wasChanged) {
+    forceLog(`Dependencies in package.json was changed, run "npm install" to get node_modules up to date`)
+  } else {
+    log(`Dependencies in package.json remained unchanged`)
+  }
+}
