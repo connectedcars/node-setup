@@ -10,8 +10,14 @@ npm install --save-dev @connectedcars/setup
 
 ### Automatic
 
+Initiate project
 ``` bash
 ./node_modules/.bin/setup init
+```
+
+Update dependencies
+``` bash
+./node_modules/.bin/setup update
 ```
 
 #### Flags

@@ -4,7 +4,7 @@ import args from 'args'
 import fs from 'fs'
 import util from 'util'
 import path from 'path'
-import { initTarget } from '../src/index'
+import { initTarget, updateTarget } from '../src/index'
 
 const readdir = util.promisify(fs.readdir)
 const fileAccess = util.promisify(fs.access)
@@ -36,7 +36,7 @@ async function main() {
   args.options([
     {
       name: 'force',
-      description: 'Whether to override/remove existing configuration'
+      description: 'Whether to override/remove existing configuration, only used for `init`'
     },
     {
       name: 'template',
@@ -66,6 +66,12 @@ async function main() {
       desc: 'Initiates the project',
       fn: async (name: string, sub: string[], options: { [key: string]: any }) => {
         await initTarget(`${templatesPath}/${options.template}`, process.cwd(), options)
+      }
+    },
+    update: {
+      desc: 'Updates dependencies for the project',
+      fn: async (name: string, sub: string[], options: { [key: string]: any }) => {
+        await updateTarget(`${templatesPath}/${options.template}`, process.cwd(), options)
       }
     }
   }
