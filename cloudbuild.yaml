@@ -9,4 +9,15 @@ steps:
       - 'BRANCH_NAME=$BRANCH_NAME'
       - 'TAG_NAME=$TAG_NAME'
       - 'COMMIT_SHA=$COMMIT_SHA'
+steps:
+  - name: 'gcr.io/connectedcars-staging/github-connectedcars-cloudbuilder-wrapper.master:latest'
+    args: ['--skip-push', '--skip-http']
+    env:
+      - 'NODE_VERSION=10.x'
+      - 'REPO_NAME=$REPO_NAME'
+      - 'GCP_PROJECT_ID=$PROJECT_ID'
+      - 'BUILD_ID=$BUILD_ID'
+      - 'BRANCH_NAME=$BRANCH_NAME'
+      - 'TAG_NAME=$TAG_NAME'
+      - 'COMMIT_SHA=$COMMIT_SHA'
 timeout: 3600s
