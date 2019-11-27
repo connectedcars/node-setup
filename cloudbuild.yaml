@@ -9,7 +9,6 @@ steps:
       - 'BRANCH_NAME=$BRANCH_NAME'
       - 'TAG_NAME=$TAG_NAME'
       - 'COMMIT_SHA=$COMMIT_SHA'
-steps:
   - name: 'gcr.io/connectedcars-staging/github-connectedcars-cloudbuilder-wrapper.master:latest'
     args: ['--skip-push', '--skip-http']
     env:
