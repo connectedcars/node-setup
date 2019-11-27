@@ -1,6 +1,6 @@
 steps:
   - name: 'gcr.io/connectedcars-staging/cloudbuilder-wrapper.master'
-    args: ['--skip-push']
+    args: ['--skip-push', '--ssh-private-key=']
     env:
       - 'NODE_VERSION=10.x'
       - 'REPO_NAME=$REPO_NAME'
