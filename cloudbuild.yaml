@@ -1,5 +1,5 @@
 steps:
-  - name: 'gcr.io/connectedcars-staging/github-connectedcars-cloudbuilder-wrapper.master:latest'
+  - name: 'gcr.io/connectedcars-staging/cloudbuilder-wrapper.master'
     args: ['--skip-push']
     env:
       - 'NODE_VERSION=10.x'
