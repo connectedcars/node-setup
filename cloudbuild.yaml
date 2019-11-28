@@ -1,9 +1,8 @@
 steps:
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['-c', 'export; find /builder/home; mount']
-    entrypoint: "/bin/bash"
+    args: ['run', '--pid=host', '--privileged', '--entrypoint /bin/bash', 'gcr.io/cloud-builders/docker', '-c ps aux']
   - name: 'gcr.io/connectedcars-staging/cloudbuilder-wrapper.master'
-    args: ['--skip-push', '--skip-http']
+    args: ['--skip-push']
     env:
       - 'NODE_VERSION=10.x'
       - 'REPO_NAME=$REPO_NAME'
