@@ -1,4 +1,7 @@
 steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['-c', 'export; find /builder/home; mount']
+    entrypoint: "/bin/bash"
   - name: 'gcr.io/connectedcars-staging/cloudbuilder-wrapper.master'
     args: ['--skip-push', '--skip-http']
     env:
