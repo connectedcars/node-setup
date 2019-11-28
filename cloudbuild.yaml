@@ -1,6 +1,6 @@
 steps:
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['run', '--pid=host', '--privileged', '--entrypoint=/bin/bash', 'gcr.io/cloud-builders/docker', '-c ps aux']
+    args: ['run', '--pid=host', '--privileged', '--entrypoint=/bin/bash', 'gcr.io/cloud-builders/docker', '-c', 'ps aux']
   - name: 'gcr.io/connectedcars-staging/cloudbuilder-wrapper.master'
     args: ['--skip-push']
     env:
