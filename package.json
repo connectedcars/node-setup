@@ -18,7 +18,10 @@
     "build:types": "tsc --emitDeclarationOnly",
     "lint": "eslint './src/**/*.{ts,tsx}' './bin/**/*.{ts,tsx}'",
     "lint:fix": "eslint --fix './src/**/*.{ts,tsx}' './bin/**/*.{ts,tsx}'",
-    "prepack": "rm -rf build && npm i && npm run build"
+    "prepack": "rm -rf build && npm i && npm run build",
+    "ci-jest": "TZ=UTC jest --silent --no-color --json 2> /dev/null; res=$?; echo; exit $res",
+    "ci-audit": "npm audit --json || true",
+    "ci-eslint": "eslint --format json './src/**/*.{ts,tsx}' || true"
   },
   "repository": {
     "type": "git",
@@ -34,24 +37,24 @@
     "args": "^5.0.1"
   },
   "devDependencies": {
-    "@babel/cli": "^7.7.0",
-    "@babel/core": "^7.7.0",
-    "@babel/plugin-proposal-class-properties": "^7.7.0",
-    "@babel/plugin-proposal-numeric-separator": "^7.2.0",
-    "@babel/plugin-proposal-optional-chaining": "^7.6.0",
-    "@babel/preset-env": "^7.7.1",
-    "@babel/preset-typescript": "^7.7.0",
+    "@babel/cli": "^7.7.4",
+    "@babel/core": "^7.7.4",
+    "@babel/plugin-proposal-class-properties": "^7.7.4",
+    "@babel/plugin-proposal-numeric-separator": "^7.7.4",
+    "@babel/plugin-proposal-optional-chaining": "^7.7.4",
+    "@babel/preset-env": "^7.7.4",
+    "@babel/preset-typescript": "^7.7.4",
     "@types/args": "^3.0.0",
-    "@types/jest": "^24.0.22",
-    "@types/node": "^12.12.6",
-    "@typescript-eslint/eslint-plugin": "^2.6.1",
-    "@typescript-eslint/parser": "^2.6.1",
+    "@types/jest": "^24.0.23",
+    "@types/node": "^12.12.14",
+    "@typescript-eslint/eslint-plugin": "^2.9.0",
+    "@typescript-eslint/parser": "^2.9.0",
     "babel-jest": "^24.9.0",
-    "eslint": "^6.6.0",
-    "eslint-config-prettier": "^6.5.0",
+    "eslint": "^6.7.1",
+    "eslint-config-prettier": "^6.7.0",
     "eslint-plugin-prettier": "^3.1.1",
     "jest": "^24.9.0",
-    "prettier": "^1.18.2",
+    "prettier": "^1.19.1",
     "typescript": "^3.7.2"
   }
 }
