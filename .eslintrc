@@ -11,7 +11,9 @@
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
-    "project": "./tsconfig.json"
+    "project": "./tsconfig.json",
+    // Workaround from https://github.com/typescript-eslint/typescript-eslint/issues/864
+    "createDefaultProgram": true
   },
   "env": {
     "jest": true,
