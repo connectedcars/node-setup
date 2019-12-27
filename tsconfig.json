@@ -15,7 +15,7 @@
     "declaration": true,
     "sourceMap": true,
     "outDir": "build/dist",
-    "rootDirs": ["src"],
+    "rootDirs": ["src", "bin"],
     "incremental": true
   },
   "exclude": [
