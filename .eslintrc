@@ -7,7 +7,8 @@
   ],
   "plugins": [
     "@typescript-eslint",
-    "prettier"
+    "prettier",
+    "simple-import-sort"
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
@@ -35,7 +36,8 @@
         "singleQuote": true,
         "semi": false
       }
-    ]
+    ],
+    "simple-import-sort/sort": "error"
   },
   "overrides": [
     {
