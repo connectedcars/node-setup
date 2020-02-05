@@ -2,8 +2,9 @@
 
 import args from 'args'
 import fs from 'fs'
-import util from 'util'
 import path from 'path'
+import util from 'util'
+
 import { initTarget, updateTarget } from '../src/index'
 
 const readdir = util.promisify(fs.readdir)

@@ -1,9 +1,10 @@
+import childProcess from 'child_process'
+import crypto from 'crypto'
 import fs from 'fs'
 import os from 'os'
 import path from 'path'
-import crypto from 'crypto'
 import util from 'util'
-import childProcess from 'child_process'
+
 import { initTarget } from './index'
 
 const copyFile = util.promisify(fs.copyFile)
