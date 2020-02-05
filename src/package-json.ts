@@ -1,4 +1,4 @@
-import { writeFileAtomic, readJsonFile } from './fsutils'
+import { readJsonFile, writeFileAtomic } from './fsutils'
 import log from './log'
 
 const templatePackagesIgnore = ['@connectedcars/setup', '@types/node']
