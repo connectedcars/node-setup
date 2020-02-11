@@ -91,11 +91,15 @@ describe('setup', () => {
       },
       scripts: {
         test: 'echo "Error: no test specified" && exit 1',
+        cov: 'TZ=UTC jest --coverage=true',
         build: 'npm run build:types && npm run build:js:src',
         'build:js:src': expect.stringMatching(/.+/),
         'build:types': 'tsc --emitDeclarationOnly',
         lint: "eslint './src/**/*.{ts,tsx}'",
-        'lint:fix': "eslint --fix './src/**/*.{ts,tsx}'"
+        'lint:fix': "eslint --fix './src/**/*.{ts,tsx}'",
+        'ci-jest': 'TZ=UTC jest --silent --no-color --json 2> /dev/null; res=$?; echo; exit $res',
+        'ci-audit': 'npm audit --json || true',
+        'ci-eslint': "eslint --format json './src/**/*.{ts,tsx}' || true"
       },
       keywords: [],
       author: '',
