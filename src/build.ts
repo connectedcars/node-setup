@@ -20,8 +20,16 @@ function transformFileAsync(filename: string, opts: babel.TransformOptions): Pro
   })
 }
 
-export async function babelBuild(rootDirs: string[], outDir: string): Promise<void> {
-  const buildList = []
+interface BuildEntry {
+  inFile: string
+  outFile: string
+  file: string
+  mode: number
+  state: string
+}
+
+export async function babelBuild(rootDirs: string[], outDir: string): Promise<BuildEntry[]> {
+  const buildList: BuildEntry[] = []
   for (const rootDir of rootDirs) {
     const fullOutDir = path.resolve(outDir, rootDir)
     const fullRootDir = path.resolve(rootDir)
@@ -39,27 +47,29 @@ export async function babelBuild(rootDirs: string[], outDir: string): Promise<vo
           }
           const relative = path.relative(fullRootDir, inFile)
           const outFile = path.join(fullOutDir, relative).replace(/ts(x?)/, 'js$1')
+          const entry: BuildEntry = {
+            inFile,
+            outFile,
+            file: `${path.join(rootDir, relative)}`,
+            mode: inStat.mode,
+            state: ''
+          }
           try {
             const outStat = await statAsync(outFile)
             if (inStat.mtime > outStat.mtime) {
-              buildList.push({ inFile, outFile, mode: inStat.mode, state: 'updated' })
+              entry.state = 'updated'
             } else {
-              buildList.push({ inFile, outFile, mode: inStat.mode, state: 'same' })
+              entry.state = 'same'
             }
           } catch (e) {
-            buildList.push({ inFile, outFile, mode: inStat.mode, state: 'new' })
+            entry.state = 'new'
           }
+          buildList.push(entry)
         }
       }
     }
   }
-  let skippedFiles = 0
   for (const build of buildList) {
-    if (build.state === 'same') {
-      skippedFiles++
-      continue
-    }
-
     const result = await transformFileAsync(build.inFile, {
       sourceFileName: path.join(
         path.relative(path.dirname(build.outFile), path.dirname(build.inFile)),
@@ -85,5 +95,5 @@ export async function babelBuild(rootDirs: string[], outDir: string): Promise<vo
     await writeFileAsync(build.outFile, result.code)
     await chmodAsync(build.outFile, build.mode)
   }
-  console.log(`Successfully processed ${buildList.length} files with Babel (Skiped: ${skippedFiles}).`)
+  return buildList
 }
