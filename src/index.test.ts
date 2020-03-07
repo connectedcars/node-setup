@@ -1,31 +1,14 @@
 import childProcess from 'child_process'
-import crypto from 'crypto'
 import fs from 'fs'
-import os from 'os'
-import path from 'path'
 import util from 'util'
 
+import { createTemporaryFolder, readJsonFile, readTextFile } from './common'
 import { initTarget } from './index'
 
 const copyFile = util.promisify(fs.copyFile)
 const execFile = util.promisify(childProcess.execFile)
 const mkdir = util.promisify(fs.mkdir)
-const readFile = util.promisify(fs.readFile)
 const readdir = util.promisify(fs.readdir)
-
-async function createTemporaryFolder() {
-  const tmpDir = os.tmpdir() + path.sep + crypto.randomBytes(8).toString('hex')
-  await mkdir(tmpDir)
-  return tmpDir
-}
-async function readTextFile(path: string): Promise<string> {
-  const content = await readFile(path, 'utf8')
-  return content
-}
-async function readJsonFile(path: string): Promise<object> {
-  const content = await readFile(path, 'utf8')
-  return JSON.parse(content)
-}
 
 describe('setup', () => {
   let folder: string

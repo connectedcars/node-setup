@@ -1,0 +1,89 @@
+import * as babel from '@babel/core'
+import fs from 'fs'
+import path from 'path'
+import util from 'util'
+
+const readdirAsync = util.promisify(fs.readdir)
+const statAsync = util.promisify(fs.stat)
+const writeFileAsync = util.promisify(fs.writeFile)
+const chmodAsync = util.promisify(fs.chmod)
+const mkdirAsync = util.promisify(fs.mkdir)
+
+function transformFileAsync(filename: string, opts: babel.TransformOptions): Promise<babel.BabelFileResult | null> {
+  return new Promise((resolve, reject) => {
+    babel.transformFile(filename, opts, (err, result) => {
+      if (err) {
+        return reject(err)
+      }
+      resolve(result)
+    })
+  })
+}
+
+export async function babelBuild(rootDirs: string[], outDir: string): Promise<void> {
+  const buildList = []
+  for (const rootDir of rootDirs) {
+    const fullOutDir = path.resolve(outDir, rootDir)
+    const fullRootDir = path.resolve(rootDir)
+    const dirs: string[] = [fullRootDir]
+    while (dirs.length > 0) {
+      const dir = dirs.shift() as string
+      for (const file of await readdirAsync(dir)) {
+        const inFile = path.resolve(dir, file)
+        const inStat = await statAsync(inFile)
+        if (inStat.isDirectory()) {
+          dirs.push(inFile)
+        } else if (inStat.isFile()) {
+          if (!file.match(/\.[tj]sx?$/) || file.match(/\.(?:test|d)\.[tj]s$/)) {
+            continue
+          }
+          const relative = path.relative(fullRootDir, inFile)
+          const outFile = path.join(fullOutDir, relative).replace(/ts(x?)/, 'js$1')
+          try {
+            const outStat = await statAsync(outFile)
+            if (inStat.mtime > outStat.mtime) {
+              buildList.push({ inFile, outFile, mode: inStat.mode, state: 'updated' })
+            } else {
+              buildList.push({ inFile, outFile, mode: inStat.mode, state: 'same' })
+            }
+          } catch (e) {
+            buildList.push({ inFile, outFile, mode: inStat.mode, state: 'new' })
+          }
+        }
+      }
+    }
+  }
+  let skippedFiles = 0
+  for (const build of buildList) {
+    if (build.state === 'same') {
+      skippedFiles++
+      continue
+    }
+
+    const result = await transformFileAsync(build.inFile, {
+      sourceFileName: path.join(
+        path.relative(path.dirname(build.outFile), path.dirname(build.inFile)),
+        path.basename(build.inFile)
+      ),
+      ignore: ['**/*.d.ts', 'src/**/*.test.ts'],
+      sourceMaps: true,
+      caller: {
+        name: '@babel/cli'
+      }
+    })
+    if (!result) {
+      // File ignored
+      continue
+    }
+    const mapFile = build.outFile + '.map'
+    result.code = result.code + `\n//# sourceMappingURL=${path.basename(mapFile)}`
+    if (result.map) {
+      result.map.file = path.basename(build.outFile)
+    }
+    await mkdirAsync(path.dirname(build.outFile), { recursive: true })
+    await writeFileAsync(mapFile, JSON.stringify(result.map))
+    await writeFileAsync(build.outFile, result.code)
+    await chmodAsync(build.outFile, build.mode)
+  }
+  console.log(`Successfully processed ${buildList.length} files with Babel (Skiped: ${skippedFiles}).`)
+}
