@@ -1,18 +1,38 @@
 #!/usr/bin/env node
 
-import childProcess from 'child_process'
-import util from 'util'
+import args from 'args'
 
-import { babelBuild } from '../src/build'
-
-const execFile = util.promisify(childProcess.execFile)
+import { babelBuild, tscBuildTypings } from '../src/build'
 
 async function main(argv: string[]): Promise<number> {
-  const babelBuildPromise = babelBuild(argv.slice(2), 'build/dist')
-  const tscPromise = await execFile('tsc', ['--emitDeclarationOnly'])
-  const results = await Promise.all([tscPromise, babelBuildPromise])
-  console.log(results[0].stdout)
-  console.log(results[0].stderr)
+  args.options([
+    {
+      name: 'skip-typings',
+      description: `Don't generate typings`
+    },
+    {
+      name: 'verbose',
+      description: 'Whether to enable verbose logging'
+    }
+  ])
+  const flags = args.parse(argv)
+
+  // TODO: Read root dirs from tsconfig
+
+  const promises: Array<Promise<void>> = []
+  promises.push(
+    (async () => {
+      await babelBuild(args.sub, 'build/dist')
+    })()
+  )
+  if (!flags['skipTypings']) {
+    promises.push(
+      (async () => {
+        await tscBuildTypings()
+      })()
+    )
+  }
+  await Promise.all(promises)
   return 0
 }
 

@@ -1,4 +1,5 @@
 import * as babel from '@babel/core'
+import childProcess from 'child_process'
 import fs from 'fs'
 import path from 'path'
 import util from 'util'
@@ -8,6 +9,7 @@ const statAsync = util.promisify(fs.stat)
 const writeFileAsync = util.promisify(fs.writeFile)
 const chmodAsync = util.promisify(fs.chmod)
 const mkdirAsync = util.promisify(fs.mkdir)
+const execFile = util.promisify(childProcess.execFile)
 
 function transformFileAsync(filename: string, opts: babel.TransformOptions): Promise<babel.BabelFileResult | null> {
   return new Promise((resolve, reject) => {
@@ -96,4 +98,8 @@ export async function babelBuild(rootDirs: string[], outDir: string): Promise<Bu
     await chmodAsync(build.outFile, build.mode)
   }
   return buildList
+}
+
+export async function tscBuildTypings(): Promise<void> {
+  await execFile('tsc', ['--emitDeclarationOnly'])
 }
