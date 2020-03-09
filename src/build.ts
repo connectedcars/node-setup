@@ -9,24 +9,16 @@ const statAsync = util.promisify(fs.stat)
 const writeFileAsync = util.promisify(fs.writeFile)
 const chmodAsync = util.promisify(fs.chmod)
 const mkdirAsync = util.promisify(fs.mkdir)
+const utimes = util.promisify(fs.utimes)
+const rename = util.promisify(fs.rename)
 const execFile = util.promisify(childProcess.execFile)
 
-function transformFileAsync(filename: string, opts: babel.TransformOptions): Promise<babel.BabelFileResult | null> {
-  return new Promise((resolve, reject) => {
-    babel.transformFile(filename, opts, (err, result) => {
-      if (err) {
-        return reject(err)
-      }
-      resolve(result)
-    })
-  })
-}
-
-interface BuildEntry {
+export interface BuildEntry {
   inFile: string
   outFile: string
   file: string
   mode: number
+  mtime: Date
   state: string
 }
 
@@ -54,6 +46,7 @@ export async function babelBuild(rootDirs: string[], outDir: string): Promise<Bu
             outFile,
             file: `${path.join(rootDir, relative)}`,
             mode: inStat.mode,
+            mtime: inStat.mtime,
             state: ''
           }
           try {
@@ -72,7 +65,10 @@ export async function babelBuild(rootDirs: string[], outDir: string): Promise<Bu
     }
   }
   for (const build of buildList) {
-    const result = await transformFileAsync(build.inFile, {
+    if (build.state === 'same') {
+      continue
+    }
+    const result = await babel.transformFileAsync(build.inFile, {
       sourceFileName: path.join(
         path.relative(path.dirname(build.outFile), path.dirname(build.inFile)),
         path.basename(build.inFile)
@@ -94,8 +90,11 @@ export async function babelBuild(rootDirs: string[], outDir: string): Promise<Bu
     }
     await mkdirAsync(path.dirname(build.outFile), { recursive: true })
     await writeFileAsync(mapFile, JSON.stringify(result.map))
-    await writeFileAsync(build.outFile, result.code)
-    await chmodAsync(build.outFile, build.mode)
+    const tmpOutFile = build.outFile + '.tmp'
+    await writeFileAsync(tmpOutFile, result.code)
+    await chmodAsync(tmpOutFile, build.mode)
+    await utimes(tmpOutFile, build.mtime, build.mtime)
+    await rename(tmpOutFile, build.outFile)
   }
   return buildList
 }
