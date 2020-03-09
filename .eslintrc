@@ -28,7 +28,15 @@
         "allowExpressions": true
       }
     ],
+    "@typescript-eslint/explicit-member-accessibility": "error",
+    "@typescript-eslint/member-ordering": "error",
+    "@typescript-eslint/no-extra-non-null-assertion": "error",
     "@typescript-eslint/no-floating-promises": "error",
+    "@typescript-eslint/no-non-null-asserted-optional-chain": "error",
+    "@typescript-eslint/no-parameter-properties": "error",
+    "@typescript-eslint/no-require-imports": "error",
+    "@typescript-eslint/no-throw-literal": "error",
+    "@typescript-eslint/restrict-plus-operands": "error",
     "prettier/prettier": [
       "error",
       {
