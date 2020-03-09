@@ -9,10 +9,6 @@ async function main(argv: string[]): Promise<number> {
     {
       name: 'skip-typings',
       description: `Don't generate typings`
-    },
-    {
-      name: 'verbose',
-      description: 'Whether to enable verbose logging'
     }
   ])
   const flags = args.parse(argv)
