@@ -1,27 +1,34 @@
 #!/usr/bin/env node
 
-import args from 'args'
+import yargs from 'yargs'
 
 import { babelBuild, tscBuildTypings } from '../src/build'
 
+interface Arguments {
+  SkipTypings: boolean
+}
+
 async function main(argv: string[]): Promise<number> {
-  args.options([
-    {
-      name: 'skip-typings',
-      description: `Don't generate typings`
-    }
-  ])
-  const flags = args.parse(argv)
+  const { _: args, ...flags } = yargs
+    .options({
+      skipTypings: {
+        alias: 's',
+        type: 'boolean',
+        default: false,
+        describe: `Don't generate typings`
+      }
+    })
+    .help()
+    .parse(argv.slice(2))
 
   // TODO: Read root dirs from tsconfig
-
   const promises: Array<Promise<void>> = []
   promises.push(
     (async () => {
-      await babelBuild(args.sub, 'build/dist')
+      await babelBuild(args, 'build/dist')
     })()
   )
-  if (!flags['skipTypings']) {
+  if (!flags.skipTypings) {
     promises.push(
       (async () => {
         await tscBuildTypings()

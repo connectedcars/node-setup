@@ -7,7 +7,8 @@
     "node": ">=10.15.0"
   },
   "bin": {
-    "setup": "build/dist/bin/setup.js"
+    "setup": "build/dist/bin/setup.js",
+    "build": "build/dist/bin/build.js"
   },
   "scripts": {
     "test": "TZ=UTC jest",
