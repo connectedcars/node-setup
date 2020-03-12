@@ -10,6 +10,11 @@ const execFile = util.promisify(childProcess.execFile)
 describe('build', () => {
   let tmpDir: string
   let logSpy: jest.SpyInstance
+
+  beforeAll(async () => {
+    await execFile('npm', ['run', 'build:js'])
+  }, 10000)
+
   beforeEach(async () => {
     logSpy = jest.spyOn(console, 'log')
     tmpDir = await createTemporaryFolder()
@@ -19,11 +24,10 @@ describe('build', () => {
   })
 
   it('should build the same output as babel cli', async () => {
-    await execFile('npm', ['run', 'build:js'])
     const tmpBuildOutput = path.join(tmpDir, 'build/dist')
     await babelBuild(['src', 'bin'], tmpBuildOutput)
     const babelFiles = await readFolderTextFiles('build/dist', /\.js$/)
     const buildFiles = await readFolderTextFiles(tmpBuildOutput, /\.js$/)
     expect(buildFiles).toMatchObject(babelFiles)
-  })
+  }, 10000)
 })

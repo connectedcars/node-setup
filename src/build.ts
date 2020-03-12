@@ -51,10 +51,10 @@ export async function babelBuild(rootDirs: string[], outDir: string): Promise<Bu
           }
           try {
             const outStat = await statAsync(outFile)
-            if (inStat.mtime > outStat.mtime) {
-              entry.state = 'updated'
-            } else {
+            if (inStat.mtime === outStat.mtime) {
               entry.state = 'same'
+            } else {
+              entry.state = 'updated'
             }
           } catch (e) {
             entry.state = 'new'
@@ -84,7 +84,7 @@ export async function babelBuild(rootDirs: string[], outDir: string): Promise<Bu
       continue
     }
     const mapFile = build.outFile + '.map'
-    result.code = result.code + `\n//# sourceMappingURL=${path.basename(mapFile)}`
+    result.code = `${result.code}\n//# sourceMappingURL=${path.basename(mapFile)}`
     if (result.map) {
       result.map.file = path.basename(build.outFile)
     }
