@@ -51,7 +51,7 @@ export async function babelBuild(rootDirs: string[], outDir: string): Promise<Bu
           }
           try {
             const outStat = await statAsync(outFile)
-            if (inStat.mtime === outStat.mtime) {
+            if (inStat.mtime.getTime() === outStat.mtime.getTime()) {
               entry.state = 'same'
             } else {
               entry.state = 'updated'

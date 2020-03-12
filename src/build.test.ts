@@ -30,4 +30,15 @@ describe('build', () => {
     const buildFiles = await readFolderTextFiles(tmpBuildOutput, /\.js$/)
     expect(buildFiles).toMatchObject(babelFiles)
   }, 10000)
+
+  it('should not rebuild anything', async () => {
+    const tmpBuildOutput = path.join(tmpDir, 'build/dist')
+    const firstRun = await babelBuild(['src', 'bin'], tmpBuildOutput)
+    expect(firstRun.filter(b => b.state !== 'new')).toEqual([])
+    const buildFilesBefore = await readFolderTextFiles(tmpBuildOutput, /\.js$/)
+    const secondRun = await babelBuild(['src', 'bin'], tmpBuildOutput)
+    expect(secondRun.filter(b => b.state !== 'same')).toEqual([])
+    const buildFilesAfter = await readFolderTextFiles(tmpBuildOutput, /\.js$/)
+    expect(buildFilesBefore).toMatchObject(buildFilesAfter)
+  }, 10000)
 })
