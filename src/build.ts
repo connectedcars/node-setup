@@ -84,7 +84,7 @@ export async function babelBuild(rootDirs: string[], outDir: string): Promise<Bu
       continue
     }
     const mapFile = build.outFile + '.map'
-    result.code = result.code + `\n//# sourceMappingURL=${path.basename(mapFile)}`
+    result.code = `${result.code}\n//# sourceMappingURL=${path.basename(mapFile)}`
     if (result.map) {
       result.map.file = path.basename(build.outFile)
     }
