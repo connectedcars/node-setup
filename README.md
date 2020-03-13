@@ -94,16 +94,9 @@ settings.json:
 {
   "typescript.tsdk": "node_modules/typescript/lib",
   "eslint.enable": true,
-  "eslint.autoFixOnSave": true,
   "eslint.validate": [
-    {
-      "language": "javascript",
-      "autoFix": true
-    },
-    {
-      "language": "typescript",
-      "autoFix": true
-    }
+    "javascript",
+    "typescript"
   ],
   "tslint.enable": false,
   "files.autoSave": "off",
@@ -116,7 +109,10 @@ settings.json:
   "jest.autoEnable": false,
   "jest.runAllTestsFirst": false,
   "jest.enableCodeLens": true,
-  "git.ignoreLimitWarning": true
+  "git.ignoreLimitWarning": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  }
 }
 ```
 
