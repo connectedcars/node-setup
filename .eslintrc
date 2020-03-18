@@ -57,7 +57,10 @@
       "rules": {
         "@typescript-eslint/explicit-function-return-type": "off",
         "@typescript-eslint/no-non-null-assertion": "off",
-        "@typescript-eslint/no-explicit-any": "off"
+        "@typescript-eslint/no-explicit-any": "off",
+        // note you must disable the base rule as it can report incorrect errors
+        "no-dupe-class-members": "off",
+        "@typescript-eslint/no-dupe-class-members": ["error"]
       }
     }
   ]
