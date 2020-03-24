@@ -40,7 +40,7 @@ export async function babelBuild(rootDirs: string[], outDir: string): Promise<Bu
             continue
           }
           const relative = path.relative(fullRootDir, inFile)
-          const outFile = path.join(fullOutDir, relative).replace(/ts(x?)/, 'js$1')
+          const outFile = path.join(fullOutDir, relative).replace(/ts(x?)$/, 'js$1')
           const entry: BuildEntry = {
             inFile,
             outFile,
