@@ -11,10 +11,6 @@ describe('build', () => {
   let tmpDir: string
   let logSpy: jest.SpyInstance
 
-  beforeAll(async () => {
-    await execFile('npm', ['run', 'build:js'])
-  }, 10000)
-
   beforeEach(async () => {
     logSpy = jest.spyOn(console, 'log')
     tmpDir = await createTemporaryFolder()
@@ -24,10 +20,16 @@ describe('build', () => {
   })
 
   it('should build the same output as babel cli', async () => {
-    const tmpBuildOutput = path.join(tmpDir, 'build/dist')
+    const tmpBuildOutput = path.join(tmpDir, 'build')
     await babelBuild(['src', 'bin'], tmpBuildOutput)
-    const babelFiles = await readFolderTextFiles('build/dist', /\.js$/)
     const buildFiles = await readFolderTextFiles(tmpBuildOutput, /\.js$/)
+
+    const babelArgs = ['--extensions', '.ts', '--source-maps', '--ignore', '**/*.d.ts,src/**/*.test.ts']
+    const tmpBabelOutput = path.join(tmpDir, 'babel')
+
+    await execFile('babel', ['src', '--out-dir', `${tmpBabelOutput}/src`, ...babelArgs])
+    await execFile('babel', ['bin', '--out-dir', `${tmpBabelOutput}/bin`, ...babelArgs])
+    const babelFiles = await readFolderTextFiles(tmpBabelOutput, /\.js$/)
     expect(buildFiles).toMatchObject(babelFiles)
   }, 10000)
 
