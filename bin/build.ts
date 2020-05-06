@@ -4,10 +4,6 @@ import yargs from 'yargs'
 
 import { babelBuild, tscBuildTypings } from '../src/build'
 
-interface Arguments {
-  SkipTypings: boolean
-}
-
 async function main(argv: string[]): Promise<number> {
   const { _: args, ...flags } = yargs
     .options({
