@@ -1,5 +1,8 @@
 bin/**.test.*
-build/
+build/dist/tsconfig.tsbuildinfo
 coverage/
 src/**.test.*
 templates/**/node_modules
+.vscode
+Dockerfile
+cloudbuild.yaml
