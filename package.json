@@ -12,6 +12,7 @@
   },
   "scripts": {
     "test": "TZ=UTC jest",
+    "cov": "TZ=UTC jest --coverage=true",
     "build": "npm run build:types && npm run build:js",
     "build:new": "./build/dist/bin/build.js bin src",
     "build:js": "npm run build:js:src && npm run build:js:bin",
