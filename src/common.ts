@@ -20,7 +20,7 @@ export async function readTextFile(path: string): Promise<string> {
   return content
 }
 
-export async function readJsonFile(path: string): Promise<object> {
+export async function readJsonFile(path: string): Promise<any> {
   const content = await readFile(path, 'utf8')
   return JSON.parse(content)
 }

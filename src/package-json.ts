@@ -12,8 +12,8 @@ interface PackageJson {
   scripts: StringMap
   files?: string[]
   engines: StringMap
-  babel?: {}
-  jest?: {}
+  babel?: StringMap
+  jest?: StringMap
 }
 
 async function readPackageJson(filePath: string): Promise<PackageJson> {
