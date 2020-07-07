@@ -11,6 +11,9 @@ COPY --chown=builder:builder . /app
 
 RUN npm ci
 
+# Make sure to build code so we can run the tests
+RUN npm run build
+
 # Run ci checks
 RUN npm run ci-audit
 
