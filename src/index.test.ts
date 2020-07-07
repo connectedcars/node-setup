@@ -134,12 +134,8 @@ describe('setup', () => {
       }
 
       // Validate both declaration and js files are generated
-      const builtFiles = await readdir(`${folder}/build/dist`)
-      expect(builtFiles).toContain('index.d.ts')
-      expect(builtFiles).toContain('index.test.d.ts')
-      expect(builtFiles).toContain('src')
-
       const builtSrcFiles = await readdir(`${folder}/build/dist/src`)
+      expect(builtSrcFiles).toContain('index.d.ts')
       expect(builtSrcFiles).toContain('index.js')
       expect(builtSrcFiles).toContain('index.js.map')
 
