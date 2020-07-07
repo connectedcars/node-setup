@@ -10,6 +10,7 @@ interface PackageJson {
   dependencies: StringMap
   devDependencies: StringMap
   scripts: StringMap
+  files?: string[]
   engines: StringMap
   babel?: {}
   jest?: {}
@@ -78,6 +79,9 @@ export async function updatePackageJson(
       delete packageJson.babel
       delete packageJson.jest
       log(`  Finished deleting "babel" and "jest"`, options)
+    }
+    if (!packageJson.files || force) {
+      packageJson.files = templatePackageJson.files
     }
   }
 
