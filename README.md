@@ -70,7 +70,7 @@ launch.json:
       "request": "launch",
       "protocol": "inspector",
       "cwd": "${workspaceRoot}",
-      "preLaunchTask": "npm: build:bin:js",
+      "preLaunchTask": "npm: build:js",
       "outFiles": [
         "${workspaceRoot}/build/dist/**/**.js"
       ],
