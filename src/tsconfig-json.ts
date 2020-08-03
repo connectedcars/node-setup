@@ -23,18 +23,16 @@ export async function fixTSConfigJson(
   options: { [key: string]: unknown } = {}
 ): Promise<void> {
   log(`  Started reading files`, options)
-  const templateTsconfigJson = await readTsconfigJson(`${templatePath}/tsconfig.json`)
   const tsconfigJson = await readTsconfigJson(`${target}/tsconfig.json`)
   log(`  Finished reading files`, options)
 
-  console.log(templateTsconfigJson, tsconfigJson)
   // Update paths
   log(`  Started updating paths`, options)
   if (tsconfigJson.compilerOptions.rootDirs) {
     delete tsconfigJson.compilerOptions.rootDirs
   }
   if (!tsconfigJson.compilerOptions.rootDir) {
-    tsconfigJson.compilerOptions.rootDir = templateTsconfigJson.compilerOptions.rootDir
+    tsconfigJson.compilerOptions.rootDir = './'
   }
   log(`  Finished updating paths`, options)
 
