@@ -85,9 +85,9 @@ export async function updatePackageJson(
     }
   }
 
-  log(`  Started updating "package.json"`, options)
+  log(`  Started writing "package.json"`, options)
   await writeFileAtomic(`${target}/package.json`, JSON.stringify(packageJson, null, 2))
-  log(`  Finished updating "package.json"`, options)
+  log(`  Finished writing "package.json"`, options)
 
   // Return whether devDependencies were changed
   return existingDevDependencies !== JSON.stringify(packageJson.devDependencies)

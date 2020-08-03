@@ -9,6 +9,8 @@ const copyFile = util.promisify(fs.copyFile)
 const execFile = util.promisify(childProcess.execFile)
 const mkdir = util.promisify(fs.mkdir)
 const readdir = util.promisify(fs.readdir)
+const readFile = util.promisify(fs.readFile)
+const writeFile = util.promisify(fs.writeFile)
 
 describe('setup', () => {
   let folder: string
@@ -152,5 +154,73 @@ describe('setup', () => {
       expect(pathsPostInstall).toContain('package.json')
       expect(pathsPostInstall).toContain('package-lock.json')
     }, 120000)
+
+    it('update', async () => {
+      await execFile('npm', ['init', '-y'], { cwd: folder })
+      try {
+        await execFile('npm', ['install', '--save-dev', `file://${process.cwd()}`], {
+          cwd: folder
+        })
+        await execFile('./node_modules/.bin/setup', ['init'], { cwd: folder })
+      } catch (e) {
+        expect(e).toBeFalsy()
+      }
+
+      const packageJson = await readJsonFile(`${folder}/package.json`)
+      packageJson.devDependencies['@babel/core'] = '1.3.37'
+      packageJson.devDependencies['eslint'] = '1.3.37'
+      packageJson.devDependencies['typescript'] = '1.3.37'
+      await writeFile(`${folder}/package.json`, JSON.stringify(packageJson, null, 2), 'utf8')
+
+      // Run `setup update -f` and check output
+      try {
+        await execFile('./node_modules/.bin/setup', ['update', '-f'], { cwd: folder })
+      } catch (e) {
+        expect(e).toBeFalsy()
+      }
+
+      const result = await readJsonFile(`${folder}/package.json`)
+      expect(result).toMatchObject({
+        devDependencies: {
+          '@babel/core': expect.stringMatching(/^\d+\.\d+\.\d+$/),
+          eslint: expect.stringMatching(/^\d+\.\d+\.\d+$/),
+          typescript: expect.stringMatching(/^\d+\.\d+\.\d+$/)
+        }
+      })
+      expect(result.devDependencies['@babel/core']).not.toEqual('1.3.37')
+      expect(result.devDependencies['eslint']).not.toEqual('1.3.37')
+      expect(result.devDependencies['typescript']).not.toEqual('1.3.37')
+    }, 30000)
+
+    it('fix', async () => {
+      await execFile('npm', ['init', '-y'], { cwd: folder })
+      try {
+        await execFile('npm', ['install', '--save-dev', `file://${process.cwd()}`], {
+          cwd: folder
+        })
+        await execFile('./node_modules/.bin/setup', ['init'], { cwd: folder })
+      } catch (e) {
+        expect(e).toBeFalsy()
+      }
+
+      const tsconfig = await readFile(`${folder}/tsconfig.json`, 'utf8')
+      await writeFile(
+        `${folder}/tsconfig.json`,
+        tsconfig.replace('"rootDir": "./"', '"rootDirs": ["src", "bin"]'),
+        'utf8'
+      )
+
+      // Run `setup update -f` and check output
+      try {
+        await execFile('./node_modules/.bin/setup', ['fix'], { cwd: folder })
+      } catch (e) {
+        expect(e).toBeFalsy()
+      }
+
+      const result = await readFile(`${folder}/tsconfig.json`, 'utf8')
+      console.log(result)
+      expect(result).toMatch(/"rootDir": ".\/"/)
+      expect(result).not.toMatch(/"rootDirs":/)
+    }, 30000)
   })
 })

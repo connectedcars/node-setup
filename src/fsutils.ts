@@ -4,7 +4,7 @@ import path from 'path'
 import { Stream } from 'stream'
 import util from 'util'
 
-const readFile = util.promisify(fs.readFile)
+export const readFile = util.promisify(fs.readFile)
 
 export async function writeFileAtomic(
   filePath: string,
