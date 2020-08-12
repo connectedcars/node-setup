@@ -27,7 +27,7 @@
     "prepare": "echo \"Make npm install devDependencies for this package by having a prepare script\"",
     "prepack": "npm run build",
     "prepublishOnly": "rm -rf build",
-    "postinstall": "! command -v setup &> /dev/null || setup fix"
+    "postinstall": "! command -v setup || setup fix"
   },
   "repository": {
     "type": "git",
