@@ -4,18 +4,12 @@ import path from 'path'
 import { Stream } from 'stream'
 import util from 'util'
 
-const readFile = util.promisify(fs.readFile)
-
-interface CreateWriteStreamOptions {
-  encoding?: string
-  flags?: string
-  mode?: number
-}
+export const readFile = util.promisify(fs.readFile)
 
 export async function writeFileAtomic(
   filePath: string,
   data: Buffer | string | Stream,
-  options?: CreateWriteStreamOptions
+  options?: Parameters<typeof fs.createWriteStream>[1]
 ): Promise<void> {
   const basePath = path.dirname(filePath)
   const fileName = path.basename(filePath)

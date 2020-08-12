@@ -10,9 +10,10 @@ interface PackageJson {
   dependencies: StringMap
   devDependencies: StringMap
   scripts: StringMap
+  files?: string[]
   engines: StringMap
-  babel?: {}
-  jest?: {}
+  babel?: StringMap
+  jest?: StringMap
 }
 
 async function readPackageJson(filePath: string): Promise<PackageJson> {
@@ -79,11 +80,14 @@ export async function updatePackageJson(
       delete packageJson.jest
       log(`  Finished deleting "babel" and "jest"`, options)
     }
+    if (!packageJson.files || force) {
+      packageJson.files = templatePackageJson.files
+    }
   }
 
-  log(`  Started updating "package.json"`, options)
+  log(`  Started writing "package.json"`, options)
   await writeFileAtomic(`${target}/package.json`, JSON.stringify(packageJson, null, 2))
-  log(`  Finished updating "package.json"`, options)
+  log(`  Finished writing "package.json"`, options)
 
   // Return whether devDependencies were changed
   return existingDevDependencies !== JSON.stringify(packageJson.devDependencies)

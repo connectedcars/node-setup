@@ -3,6 +3,7 @@ import util from 'util'
 
 import log, { forceLog } from './log'
 import { updatePackageJson } from './package-json'
+import { fixTSConfigJson } from './tsconfig-json'
 
 const copyFile = util.promisify(fs.copyFile)
 const readdir = util.promisify(fs.readdir)
@@ -70,4 +71,14 @@ export async function updateTarget(
   } else {
     log(`Dependencies in package.json remained unchanged`)
   }
+}
+
+export async function fixTarget(
+  templatePath: string,
+  target: string,
+  options: { [key: string]: unknown } = {}
+): Promise<void> {
+  log(`Started updating tsconfig.json`, options)
+  await fixTSConfigJson(templatePath, target, options)
+  log(`Finished updating tsconfig.json`, options)
 }
