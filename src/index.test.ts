@@ -195,10 +195,11 @@ describe('setup', () => {
     it('fix', async () => {
       await execFile('npm', ['init', '-y'], { cwd: folder })
       try {
-        await execFile('npm', ['install', '--save-dev', `file://${process.cwd()}`], {
+        const result = await execFile('npm', ['install', '--save-dev', `file://${process.cwd()}`], {
           cwd: folder
         })
         await execFile('./node_modules/.bin/setup', ['init'], { cwd: folder })
+        expect(result.stdout).toMatch(/Applying fixes for configuration files if needed/)
       } catch (e) {
         expect(e).toBeFalsy()
       }
@@ -218,7 +219,6 @@ describe('setup', () => {
       }
 
       const result = await readFile(`${folder}/tsconfig.json`, 'utf8')
-      console.log(result)
       expect(result).toMatch(/"rootDir": ".\/"/)
       expect(result).not.toMatch(/"rootDirs":/)
     }, 30000)

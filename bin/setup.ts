@@ -6,6 +6,7 @@ import path from 'path'
 import util from 'util'
 
 import { fixTarget, initTarget, updateTarget } from '../src/index'
+import { forceLog } from '../src/log'
 
 const readdir = util.promisify(fs.readdir)
 const fileAccess = util.promisify(fs.access)
@@ -78,6 +79,7 @@ async function main() {
     fix: {
       desc: 'Fixes paths and other settings for the project',
       fn: async (name: string, sub: string[], options: { [key: string]: any }) => {
+        forceLog('Applying fixes for configuration files if needed')
         await fixTarget(`${templatesPath}/${options.template}`, process.cwd(), options)
       }
     }
