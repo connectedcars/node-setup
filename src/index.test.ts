@@ -199,7 +199,7 @@ describe('setup', () => {
           cwd: folder
         })
         await execFile('./node_modules/.bin/setup', ['init'], { cwd: folder })
-        expect(result.stdout).toMatch(/Applying fixes for configuration files if needed/)
+        expect(result.stdout).toMatch(/Applying fixes for configuration files in/)
       } catch (e) {
         expect(e).toBeFalsy()
       }
