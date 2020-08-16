@@ -80,7 +80,7 @@ async function main() {
       desc: 'Fixes paths and other settings for the project',
       fn: async (name: string, sub: string[], options: { [key: string]: any }) => {
         forceLog(`Applying fixes for configuration files in ${process.cwd()}`)
-        await fixTarget(`${templatesPath}/${options.template}`, process.cwd(), options)
+        await fixTarget(`${templatesPath}/${options.template}`, sub.length > 0 ? sub[0] : process.cwd(), options)
       }
     }
   }

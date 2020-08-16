@@ -4,6 +4,7 @@ import util from 'util'
 
 import { createTemporaryFolder, readJsonFile, readTextFile } from './common'
 import { initTarget } from './index'
+import { PackageJson } from './package-json'
 
 const copyFile = util.promisify(fs.copyFile)
 const execFile = util.promisify(childProcess.execFile)
@@ -166,7 +167,7 @@ describe('setup', () => {
         expect(e).toBeFalsy()
       }
 
-      const packageJson = await readJsonFile(`${folder}/package.json`)
+      const packageJson = await readJsonFile<PackageJson>(`${folder}/package.json`)
       packageJson.devDependencies['@babel/core'] = '1.3.37'
       packageJson.devDependencies['eslint'] = '1.3.37'
       packageJson.devDependencies['typescript'] = '1.3.37'
@@ -179,7 +180,7 @@ describe('setup', () => {
         expect(e).toBeFalsy()
       }
 
-      const result = await readJsonFile(`${folder}/package.json`)
+      const result = await readJsonFile<PackageJson>(`${folder}/package.json`)
       expect(result).toMatchObject({
         devDependencies: {
           '@babel/core': expect.stringMatching(/^\d+\.\d+\.\d+$/),
