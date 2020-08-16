@@ -3,10 +3,10 @@ import log from './log'
 
 const templatePackagesIgnore = ['@connectedcars/setup', '@types/node']
 
-interface StringMap {
+export interface StringMap {
   [key: string]: string
 }
-interface PackageJson {
+export interface PackageJson {
   dependencies: StringMap
   devDependencies: StringMap
   scripts: StringMap
