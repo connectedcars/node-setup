@@ -34,10 +34,10 @@ Update dependencies
 
 Extend existing configurations from node_modules/setup:
 
-* [Babel](./template/.babelrc)
-* [ESlint](./template/.eslintrc)
-* [Jest](./template/jest.config.js)
-* [TypeScript](./template/tsconfig.json)
+* [Babel](./templates/node/.babelrc)
+* [ESlint](./templates/node/.eslintrc)
+* [Jest](./templates/node/jest.config.js)
+* [TypeScript](./templates/node/tsconfig.json)
 
 And manually install needed dependencies:
 
