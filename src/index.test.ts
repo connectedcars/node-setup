@@ -230,7 +230,6 @@ describe('setup', () => {
       const result = await execFile('npm', ['install', '--save-dev', `file://${process.cwd()}`], {
         cwd: tmpFolder
       })
-      console.log(result)
       expect(result.stdout).toMatch(/Applying fixes for configuration files in/)
       expect(result.stderr).not.toMatch(/UnhandledPromiseRejectionWarning/)
     }, 30000)
