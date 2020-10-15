@@ -223,5 +223,15 @@ describe('setup', () => {
       expect(result).toMatch(/"rootDir": ".\/"/)
       expect(result).not.toMatch(/"rootDirs":/)
     }, 30000)
+
+    it('should run fix on new installs', async () => {
+      const tmpFolder = await createTemporaryFolder()
+      await execFile('npm', ['init', '-y'], { cwd: tmpFolder })
+      const result = await execFile('npm', ['install', '--save-dev', `file://${process.cwd()}`], {
+        cwd: tmpFolder
+      })
+      expect(result.stdout).toMatch(/Applying fixes for configuration files in/)
+      expect(result.stderr).not.toMatch(/UnhandledPromiseRejectionWarning/)
+    }, 30000)
   })
 })

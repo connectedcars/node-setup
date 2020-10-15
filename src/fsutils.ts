@@ -6,6 +6,15 @@ import util from 'util'
 
 export const readFile = util.promisify(fs.readFile)
 
+const access = util.promisify(fs.access)
+
+export async function isFileReadable(filePath: string): Promise<boolean> {
+  const res = await access(filePath, fs.constants.R_OK)
+    .then(() => true)
+    .catch(e => false)
+  return res
+}
+
 export async function writeFileAtomic(
   filePath: string,
   data: Buffer | string | Stream,

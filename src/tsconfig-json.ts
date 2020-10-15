@@ -1,4 +1,4 @@
-import { readFile, writeFileAtomic } from './fsutils'
+import { isFileReadable, readFile, writeFileAtomic } from './fsutils'
 import log from './log'
 
 interface StringMap {
@@ -22,6 +22,9 @@ export async function fixTSConfigJson(
   target: string,
   options: { [key: string]: unknown } = {}
 ): Promise<void> {
+  if (!(await isFileReadable(`${target}/tsconfig.json`))) {
+    return
+  }
   log(`  Started reading files`, options)
   const tsconfigJson = await readTsconfigJson(`${target}/tsconfig.json`)
   log(`  Finished reading files`, options)
