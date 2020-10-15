@@ -22,10 +22,6 @@
     "prepack": "npm run build",
     "prepublishOnly": "rm -rf build"
   },
-  "files": [
-    "build/dist/**/!(*.test).js",
-    "build/dist/**/!(*.test).d.ts"
-  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/connectedcars/node-setup.git"
