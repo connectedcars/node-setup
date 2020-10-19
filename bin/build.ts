@@ -2,7 +2,7 @@
 
 import yargs from 'yargs'
 
-import { babelBuild, tscBuildTypings } from '../src/build'
+import { babelBuild, BuildErrorOutput, tscBuildTypings } from '../src/build'
 
 async function main(argv: string[]): Promise<number> {
   const { _: args, ...flags } = yargs
@@ -40,5 +40,10 @@ main(process.argv)
     process.exit(exitCode)
   })
   .catch(e => {
-    console.error(e)
+    if (e instanceof BuildErrorOutput) {
+      console.error(e.message)
+    } else {
+      console.error(e)
+    }
+    process.exit(255)
   })
