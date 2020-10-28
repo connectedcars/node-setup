@@ -112,7 +112,7 @@ export async function tscBuildTypings(): Promise<void> {
   try {
     await execFile('tsc', ['--emitDeclarationOnly'])
   } catch (e) {
-    const execError = e as ExeFileError
+    const execError = e as ExecFileError
     throw new BuildErrorOutput(execError.stdout, e)
   }
 }
