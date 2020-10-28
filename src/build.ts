@@ -99,6 +99,28 @@ export async function babelBuild(rootDirs: string[], outDir: string): Promise<Bu
   return buildList
 }
 
+interface ExecFileError extends Error {
+  killed: boolean
+  code: number
+  signal: null | string
+  cmd: string
+  stdout: string
+  stderr: string
+}
+
 export async function tscBuildTypings(): Promise<void> {
-  await execFile('tsc', ['--emitDeclarationOnly'])
+  try {
+    await execFile('tsc', ['--emitDeclarationOnly'])
+  } catch (e) {
+    const execError = e as ExecFileError
+    throw new BuildErrorOutput(execError.stdout, e)
+  }
+}
+
+export class BuildErrorOutput extends Error {
+  public error: Error
+  public constructor(message: string, e: Error) {
+    super(message)
+    this.error = e
+  }
 }
