@@ -99,7 +99,7 @@ export async function babelBuild(rootDirs: string[], outDir: string): Promise<Bu
   return buildList
 }
 
-interface ExeFileError extends Error {
+interface ExecFileError extends Error {
   killed: boolean
   code: number
   signal: null | string
