@@ -11,7 +11,7 @@ const access = util.promisify(fs.access)
 export async function isFileReadable(filePath: string): Promise<boolean> {
   const res = await access(filePath, fs.constants.R_OK)
     .then(() => true)
-    .catch(e => false)
+    .catch(() => false)
   return res
 }
 

@@ -21,7 +21,10 @@ async function main(argv: string[]): Promise<number> {
   const promises: Array<Promise<void>> = []
   promises.push(
     (async () => {
-      await babelBuild(args, 'build/dist')
+      await babelBuild(
+        args.map(a => a.toString()),
+        'build/dist'
+      )
     })()
   )
   if (!flags.skipTypings) {
