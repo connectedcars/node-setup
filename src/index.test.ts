@@ -193,17 +193,12 @@ describe('setup', () => {
       expect(result.devDependencies['typescript']).not.toEqual('1.3.37')
     }, 30000)
 
-    it('fix', async () => {
+    it('should fix tsconfig.json with a manual run', async () => {
       await execFile('npm', ['init', '-y'], { cwd: folder })
-      try {
-        const result = await execFile('npm', ['install', '--save-dev', `file://${process.cwd()}`], {
-          cwd: folder
-        })
-        await execFile('./node_modules/.bin/setup', ['init'], { cwd: folder })
-        expect(result.stdout).toMatch(/Applying fixes for configuration files in/)
-      } catch (e) {
-        expect(e).toBeFalsy()
-      }
+      await execFile('npm', ['install', '--save-dev', `file://${process.cwd()}`], {
+        cwd: folder
+      })
+      await execFile('./node_modules/.bin/setup', ['init'], { cwd: folder })
 
       const tsconfig = await readFile(`${folder}/tsconfig.json`, 'utf8')
       await writeFile(
@@ -213,11 +208,7 @@ describe('setup', () => {
       )
 
       // Run `setup update -f` and check output
-      try {
-        await execFile('./node_modules/.bin/setup', ['fix'], { cwd: folder })
-      } catch (e) {
-        expect(e).toBeFalsy()
-      }
+      await execFile('./node_modules/.bin/setup', ['fix'], { cwd: folder })
 
       const result = await readFile(`${folder}/tsconfig.json`, 'utf8')
       expect(result).toMatch(/"rootDir": ".\/"/)
@@ -227,11 +218,26 @@ describe('setup', () => {
     it('should run fix on new installs', async () => {
       const tmpFolder = await createTemporaryFolder()
       await execFile('npm', ['init', '-y'], { cwd: tmpFolder })
-      const result = await execFile('npm', ['install', '--save-dev', `file://${process.cwd()}`], {
+
+      // Write broken tsconfig file
+      const tsConfig = {
+        extends: './node_modules/@connectedcars/setup/tsconfig',
+        // All paths need to reset or they would be pointing to ./node_modules/@connectedcars/setup
+        compilerOptions: {
+          outDir: 'build/dist',
+          rootDirs: ['src', 'bin']
+        },
+        exclude: ['build', 'node_modules', 'coverage']
+      }
+      await writeFile(`${tmpFolder}/tsconfig.json`, JSON.stringify(tsConfig), 'utf8')
+
+      // Install package using postinstall hock to fix tsconfig.json
+      await execFile('npm', ['install', '--save-dev', `file://${process.cwd()}`], {
         cwd: tmpFolder
       })
-      expect(result.stdout).toMatch(/Applying fixes for configuration files in/)
-      expect(result.stderr).not.toMatch(/UnhandledPromiseRejectionWarning/)
+      const result = await readFile(`${tmpFolder}/tsconfig.json`, 'utf8')
+      expect(result).toMatch(/"rootDir": ".\/"/)
+      expect(result).not.toMatch(/"rootDirs":/)
     }, 30000)
   })
 })
