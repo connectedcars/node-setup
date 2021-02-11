@@ -27,7 +27,7 @@
     "prepare": "echo \"Make npm install devDependencies for this package by having a prepare script\"",
     "prepack": "npm run build",
     "prepublishOnly": "rm -rf build",
-    "postinstall": "node build/dist/bin/setup.js fix $INIT_CWD"
+    "postinstall": "test ! -f build/dist/bin/setup.js || node build/dist/bin/setup.js fix $INIT_CWD"
   },
   "repository": {
     "type": "git",
