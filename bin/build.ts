@@ -5,7 +5,7 @@ import yargs from 'yargs'
 import { babelBuild, BuildErrorOutput, tscBuildTypings } from '../src/build'
 
 async function main(argv: string[]): Promise<number> {
-  const { _: args, ...flags } = yargs
+  const { _: args, ...flags } = await yargs
     .options({
       skipTypings: {
         alias: 's',
