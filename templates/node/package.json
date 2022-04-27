@@ -5,7 +5,7 @@
   "main": "build/dist/src/index.js",
   "types": "build/dist/src/index.d.ts",
   "engines": {
-    "node": ">=10.15.0"
+    "node": ">=16.0.0"
   },
   "scripts": {
     "test": "TZ=UTC jest",
