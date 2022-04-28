@@ -4,7 +4,7 @@
   "description": "Connected Cars JavaScript/TypeScript development setup",
   "main": "build/dist/src/index.js",
   "engines": {
-    "node": ">=10.15.0"
+    "node": ">=16.0.0"
   },
   "bin": {
     "setup": "build/dist/bin/setup.js",
