@@ -215,8 +215,7 @@ describe('setup', () => {
       expect(result).not.toMatch(/"rootDirs":/)
     }, 30000)
 
-    // Postinstall hooks seem to be having issues: https://app.shortcut.com/connectedcars/story/74577/fix-failing-test-case-in-node-setup
-    it.skip('should run fix on new installs', async () => {
+    it('should run fix on new installs', async () => {
       const tmpFolder = await createTemporaryFolder()
       await execFile('npm', ['init', '-y'], { cwd: tmpFolder })
 

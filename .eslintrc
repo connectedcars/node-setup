@@ -39,6 +39,13 @@
     "@typescript-eslint/restrict-plus-operands": "error",
     // note you must disable the base rule as it can report incorrect errors
     "no-dupe-class-members": "off",
+    "no-restricted-syntax": [
+      "error",
+      {
+        "selector": "ExportDefaultDeclaration",
+        "message": "'export default' is not allowed"
+      }
+    ],
     "@typescript-eslint/no-dupe-class-members": ["error"],
     "prettier/prettier": [
       "error",
