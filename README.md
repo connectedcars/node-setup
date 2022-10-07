@@ -54,6 +54,11 @@ Required:
 Sugested:
  * [jest-runner](https://marketplace.visualstudio.com/items?itemName=firsttris.vscode-jest-runner)
 
+### extensions.json 
+``` json5
+{
+  "recommendations": ["dbaeumer.vscode-eslint", "firsttris.vscode-jest-runner", "editorconfig.editorconfig"]
+}
 ### launch.json
 
 ``` json5
