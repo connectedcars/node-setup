@@ -45,7 +45,21 @@ And manually install needed dependencies:
 
 ## VSCode
 
-launch.json:
+### Extensions
+
+Required:
+ * [EditorConfig](https://marketplace.visualstudio.com/items?itemName=EditorConfig.EditorConfig)
+ * [eslint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
+
+Sugested:
+ * [jest-runner](https://marketplace.visualstudio.com/items?itemName=firsttris.vscode-jest-runner)
+
+### extensions.json 
+``` json5
+{
+  "recommendations": ["dbaeumer.vscode-eslint", "firsttris.vscode-jest-runner", "editorconfig.editorconfig"]
+}
+### launch.json
 
 ``` json5
 {
@@ -88,7 +102,7 @@ launch.json:
 }
 ```
 
-settings.json:
+### settings.json
 
 ``` json5
 {
@@ -116,7 +130,7 @@ settings.json:
 }
 ```
 
-tasks.json:
+### tasks.json
 
 ``` json5
 {
