@@ -45,7 +45,7 @@ And manually install needed dependencies:
 
 ## VSCode
 
-### Extensions:
+### Extensions
 
 Required:
  * [EditorConfig](https://marketplace.visualstudio.com/items?itemName=EditorConfig.EditorConfig)
