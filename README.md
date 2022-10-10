@@ -59,6 +59,7 @@ Sugested:
 {
   "recommendations": ["dbaeumer.vscode-eslint", "firsttris.vscode-jest-runner", "editorconfig.editorconfig"]
 }
+```
 
 ### launch.json
 
