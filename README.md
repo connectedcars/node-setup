@@ -2,8 +2,6 @@
 
 Connected Cars JavaScript/TypeScript development setup
 
-https://wiki.connectedcars.io/en/backend/working-on-projects
-
 ## Use
 
 ``` bash
