@@ -12,5 +12,9 @@ module.exports = {
     '!**/src/**.test.ts',
     '!**/bin/**.test.ts'
   ],
-  moduleFileExtensions: ['ts', 'js', 'json', 'node']
+  moduleFileExtensions: ['ts', 'js', 'json', 'node'],
+  snapshotFormat: {
+    escapeString: true,
+    printBasicPrototype: true
+  }
 }
