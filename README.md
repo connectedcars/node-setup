@@ -54,7 +54,7 @@ Required:
 Sugested:
  * [jest-runner](https://marketplace.visualstudio.com/items?itemName=firsttris.vscode-jest-runner)
 
-### extensions.json 
+### extensions.json
 ``` json5
 {
   "recommendations": ["dbaeumer.vscode-eslint", "firsttris.vscode-jest-runner", "editorconfig.editorconfig"]
@@ -114,20 +114,21 @@ Sugested:
     "javascript",
     "typescript"
   ],
-  "tslint.enable": false,
   "files.autoSave": "off",
   "files.exclude": {
     "**/.git": true,
     "**/.DS_Store": true,
     "build": true
   },
-  "jest.showCoverageOnLoad": true,
-  "jest.autoEnable": false,
-  "jest.runAllTestsFirst": false,
-  "jest.enableCodeLens": true,
   "git.ignoreLimitWarning": true,
-  "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true
+  "[javascripts][javascriptreact][typescript][typescriptreact][json]": {
+    "editor.formatOnSave": false,
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": true
+    }
+  },
+  "[json][jsonc]": {
+    "editor.formatOnSave": true
   }
 }
 ```
