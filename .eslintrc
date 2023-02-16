@@ -37,6 +37,7 @@
     "@typescript-eslint/no-require-imports": "error",
     "@typescript-eslint/no-throw-literal": "error",
     "@typescript-eslint/restrict-plus-operands": "error",
+    "@typescript-eslint/await-thenable": "error",
     "no-console": "error",
     // note you must disable the base rule as it can report incorrect errors
     "no-dupe-class-members": "off",
@@ -81,7 +82,7 @@
       "rules": {
         "@typescript-eslint/explicit-function-return-type": "off",
         "@typescript-eslint/no-non-null-assertion": "off",
-        "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/no-explicit-any": "off"
       }
     },
     {
