@@ -1,7 +1,7 @@
 import fs from 'fs'
 import util from 'util'
 
-import log, { forceLog } from './log'
+import { forceLog, log } from './log'
 import { updatePackageJson } from './package-json'
 import { fixTSConfigJson } from './tsconfig-json'
 
