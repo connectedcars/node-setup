@@ -1,5 +1,5 @@
 import { readJsonFile, writeFileAtomic } from './fsutils'
-import log from './log'
+import { log } from './log'
 
 const templatePackagesIgnore = ['@connectedcars/setup', '@types/node']
 
@@ -26,7 +26,7 @@ async function readPackageJson(filePath: string): Promise<PackageJson> {
 
 function sortDependencies(dependencies: StringMap): StringMap {
   const tempDevDependencies: StringMap = {}
-  for (const name of Object.keys(dependencies).sort()) {
+  for (const name of Object.keys(dependencies).sort((a, b) => a.localeCompare(b))) {
     tempDevDependencies[name] = dependencies[name]
   }
   return tempDevDependencies

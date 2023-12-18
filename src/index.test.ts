@@ -95,9 +95,10 @@ describe('setup', () => {
         devDependencies: {
           '@babel/cli': expect.stringMatching(/^\d+\.\d+\.\d+$/),
           '@babel/core': expect.stringMatching(/^\d+\.\d+\.\d+$/),
-          '@babel/plugin-proposal-class-properties': expect.stringMatching(/^\d+\.\d+\.\d+$/),
-          '@babel/plugin-proposal-numeric-separator': expect.stringMatching(/^\d+\.\d+\.\d+$/),
-          '@babel/plugin-proposal-optional-chaining': expect.stringMatching(/^\d+\.\d+\.\d+$/),
+          '@babel/plugin-transform-class-properties': expect.stringMatching(/^\d+\.\d+\.\d+$/),
+          '@babel/plugin-transform-nullish-coalescing-operator': expect.stringMatching(/^\d+\.\d+\.\d+$/),
+          '@babel/plugin-transform-numeric-separator': expect.stringMatching(/^\d+\.\d+\.\d+$/),
+          '@babel/plugin-transform-optional-chaining': expect.stringMatching(/^\d+\.\d+\.\d+$/),
           '@babel/preset-env': expect.stringMatching(/^\d+\.\d+\.\d+$/),
           '@babel/preset-typescript': expect.stringMatching(/^\d+\.\d+\.\d+$/),
           '@types/jest': expect.stringMatching(/^\d+\.\d+\.\d+$/),

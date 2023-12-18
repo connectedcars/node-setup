@@ -1,5 +1,5 @@
 import { isFileReadable, readFile, writeFileAtomic } from './fsutils'
-import log from './log'
+import { log } from './log'
 
 interface StringMap {
   [key: string]: string
