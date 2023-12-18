@@ -62,7 +62,7 @@ async function main() {
   const commands: {
     [key: string]: {
       desc: string
-      fn: (name: string, sub: string[], options: { [key: string]: any }) => void
+      fn: (name: string, sub: string[], options: { [key: string]: any }) => Promise<void>
     }
   } = {
     init: {
