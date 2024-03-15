@@ -4,6 +4,8 @@ export function plus(x: number, y: number): number {
     x,
     y
   }
-  const xNum: (x: number) => number = x => x
+  function xNum(x: number): number {
+    return x
+  }
   return xNum(obj.x) + obj.y
 }
