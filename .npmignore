@@ -30,3 +30,7 @@
 /tsconfig.json
 # Extra
 /templates/**/node_modules
+!/.babelrc
+!/.eslintrc
+!/jest.config.js
+!/tsconfig.json
