@@ -45,7 +45,7 @@
       "error",
       {
         "patterns": [
-          "@connectedcars/backend/build/dist/*"
+          "@connectedcars/*/build/dist/*"
         ]
       }
     ],
