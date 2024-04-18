@@ -54,6 +54,13 @@
       {
         "selector": "ExportDefaultDeclaration",
         "message": "'export default' is not allowed"
+      },
+      {
+        // Incorrect: 'str'.replace('pattern', 'replacement')
+        // Correct:   'str'.replace(/pattern/, 'replacement')
+        // Correct:   'str'.replaceAll('pattern', 'replacement')
+        "selector": "CallExpression[callee.property.name='replace'][arguments.0.type='Literal']:not([arguments.0.regex])",
+        "message": "Using String.replace with a string argument is error-prone because it only replaces the first occurrence of the pattern. Use String.replaceAll or a RegExp pattern instead."
       }
     ],
     "@typescript-eslint/no-dupe-class-members": [
