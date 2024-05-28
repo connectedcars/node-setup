@@ -74,7 +74,7 @@ describe('setup', () => {
         description: '',
         main: 'index.js',
         engines: {
-          node: '>=16.0.0'
+          node: '>=20.0.0'
         },
         scripts: {
           test: 'echo "Error: no test specified" && exit 1',
@@ -84,9 +84,11 @@ describe('setup', () => {
           'build:types': 'tsc --noEmit',
           lint: "eslint './src/**/*.{ts,tsx}'",
           'lint:fix': "eslint --fix './src/**/*.{ts,tsx}'",
-          'ci-jest': 'TZ=UTC jest --silent --no-color --json 2> /dev/null; res=$?; echo; exit $res',
-          'ci-audit': 'npm audit --json || true',
-          'ci-eslint': "eslint --format json './src/**/*.{ts,tsx}' || true"
+          'ci-tsc': 'checks tsc',
+          'ci-jest': 'checks jest',
+          'ci-audit': 'checks audit',
+          'ci-eslint': 'checks eslint',
+          'ci-auto': 'checks auto --hard-fail'
         },
         keywords: [],
         author: '',
