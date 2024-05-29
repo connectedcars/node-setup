@@ -206,6 +206,7 @@ describe('setup', () => {
       const tsconfig = await readFile(`${folder}/tsconfig.json`, 'utf8')
       await writeFile(
         `${folder}/tsconfig.json`,
+        // eslint-disable-next-line no-restricted-syntax
         tsconfig.replace('"rootDir": "./"', '"rootDirs": ["src", "bin"]'),
         'utf8'
       )

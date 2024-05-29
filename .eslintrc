@@ -8,7 +8,8 @@
   "plugins": [
     "@typescript-eslint",
     "prettier",
-    "simple-import-sort"
+    "simple-import-sort",
+    "jest"
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
@@ -78,7 +79,12 @@
     ],
     "simple-import-sort/imports": "error",
     "simple-import-sort/exports": "error",
-    "func-style": ["error", "declaration"]
+    "func-style": ["error", "declaration"],
+    "jest/no-disabled-tests": "warn",
+    "jest/no-focused-tests": "error",
+    "jest/no-identical-title": "error",
+    "jest/prefer-to-have-length": "warn",
+    "jest/valid-expect": "error"
   },
   "overrides": [
     {

@@ -43,6 +43,7 @@ export async function fixTSConfigJson(
   const contents = JSON.stringify(tsconfigJson, null, 2)
   await writeFileAtomic(
     `${target}/tsconfig.json`,
+    // eslint-disable-next-line no-restricted-syntax
     contents.replace(
       '"compilerOptions":',
       '// All paths need to reset or they would be pointing to ./node_modules/@connectedcars/setup\n  "compilerOptions":'
