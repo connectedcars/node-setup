@@ -80,7 +80,11 @@
     ],
     "simple-import-sort/imports": "error",
     "simple-import-sort/exports": "error",
-    "func-style": ["error", "declaration"]
+    "func-style": ["error", "declaration"],
+    "jest/consistent-test-it": ["warn", {
+      "fn": "it",
+      "withinDescribe": "it"
+    }]
   },
   "overrides": [
     {
