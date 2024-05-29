@@ -3,7 +3,8 @@
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
     "prettier",
-    "plugin:prettier/recommended"
+    "plugin:prettier/recommended",
+    "plugin:jest/recommended"
   ],
   "plugins": [
     "@typescript-eslint",
@@ -79,12 +80,7 @@
     ],
     "simple-import-sort/imports": "error",
     "simple-import-sort/exports": "error",
-    "func-style": ["error", "declaration"],
-    "jest/no-disabled-tests": "warn",
-    "jest/no-focused-tests": "error",
-    "jest/no-identical-title": "error",
-    "jest/prefer-to-have-length": "warn",
-    "jest/valid-expect": "error"
+    "func-style": ["error", "declaration"]
   },
   "overrides": [
     {

@@ -130,12 +130,14 @@ describe('setup', () => {
         await execFile('./node_modules/.bin/setup', ['init'], { cwd: folder })
         await execFile('npm', ['install'], { cwd: folder })
       } catch (e) {
+        // eslint-disable-next-line jest/no-conditional-expect
         expect(e).toBeFalsy()
       }
 
       try {
         await execFile('npm', ['run', 'build'], { cwd: folder })
       } catch (e) {
+        // eslint-disable-next-line jest/no-conditional-expect
         expect(e && e.stderr).toBeFalsy()
       }
 
@@ -149,6 +151,7 @@ describe('setup', () => {
       try {
         await execFile('npm', ['run', 'lint'], { cwd: folder })
       } catch (e) {
+        // eslint-disable-next-line jest/no-conditional-expect
         expect(e && e.stdout).toBeFalsy()
       }
 
@@ -167,6 +170,7 @@ describe('setup', () => {
         })
         await execFile('./node_modules/.bin/setup', ['init'], { cwd: folder })
       } catch (e) {
+        // eslint-disable-next-line jest/no-conditional-expect
         expect(e).toBeFalsy()
       }
 
@@ -180,6 +184,7 @@ describe('setup', () => {
       try {
         await execFile('./node_modules/.bin/setup', ['update', '-f'], { cwd: folder })
       } catch (e) {
+        // eslint-disable-next-line jest/no-conditional-expect
         expect(e).toBeFalsy()
       }
 
