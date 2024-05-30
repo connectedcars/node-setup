@@ -5,7 +5,7 @@ import { fixTSConfigJson } from './tsconfig-json'
 describe('tsconfig.json', () => {
   it('should not throw when calling fixTSConfigJson on an empty folder', async () => {
     const tmpFolder = await createTemporaryFolder()
-    await fixTSConfigJson('', tmpFolder)
+    await expect(fixTSConfigJson('', tmpFolder)).resolves.not.toThrow()
   })
 
   it('should fix tsconfig.json when calling fixTSConfigJson', async () => {
