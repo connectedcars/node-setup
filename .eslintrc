@@ -63,6 +63,12 @@
         // Correct:   'str'.replaceAll('pattern', 'replacement')
         "selector": "CallExpression[callee.property.name='replace'][arguments.0.type='Literal']:not([arguments.0.regex])",
         "message": "Using String.replace with a string argument is error-prone because it only replaces the first occurrence of the pattern. Use String.replaceAll or a RegExp pattern instead."
+      },
+      {
+        // Incorrect: knex().onConflict().ignore()
+        // Correct:   knex().onConflict().merge(['unchangedColumn'])
+        "selector": "CallExpression[callee.property.name='ignore'][callee.object.callee.property.name='onConflict']",
+        "message": "Using '.ignore()' is disallowed as it will ignore all errors in MySQL (as it will generate a query using 'insert ignore'). Use '.merge()' to create a noop instead."
       }
     ],
     "@typescript-eslint/no-dupe-class-members": [
