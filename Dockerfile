@@ -1,7 +1,7 @@
 ARG NODE_VERSION=stable
 ARG COMMIT_SHA=master
 
-FROM gcr.io/connectedcars-staging/node-builder.master:$NODE_VERSION as builder
+FROM europe-west1-docker.pkg.dev/connectedcars-build/node-builder/master:$NODE_VERSION as builder
 
 WORKDIR /app
 
