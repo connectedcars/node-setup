@@ -90,7 +90,8 @@
     "jest/consistent-test-it": ["warn", {
       "fn": "it",
       "withinDescribe": "it"
-    }]
+    }],
+    "object-shorthand": "warn"
   },
   "overrides": [
     {
