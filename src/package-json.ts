@@ -2,6 +2,17 @@ import { readJsonFile, writeFileAtomic } from './fsutils'
 import { log } from './log'
 
 const templatePackagesIgnore = ['@connectedcars/setup', '@types/node']
+const legacyPackages = [
+  '@babel/plugin-proposal-class-properties',
+  '@babel/plugin-proposal-nullish-coalescing-operator',
+  '@babel/plugin-proposal-numeric-separator',
+  '@babel/plugin-proposal-optional-chaining',
+  '@babel/plugin-transform-class-properties',
+  '@babel/plugin-transform-nullish-coalescing-operator',
+  '@babel/plugin-transform-numeric-separator',
+  '@babel/plugin-transform-optional-chaining',
+  '@typescript-eslint/parser'
+]
 
 export interface StringMap {
   [key: string]: string
@@ -56,6 +67,10 @@ export async function updatePackageJson(
       const templateVersion = templatePackageJson.devDependencies[dependency]
       packageJson.devDependencies[dependency] = templateVersion
     }
+  }
+  // Remove legacy dependencies
+  for (const legacyPackage of legacyPackages) {
+    delete packageJson.devDependencies[legacyPackage]
   }
   packageJson.devDependencies = sortDependencies(packageJson.devDependencies)
   log(`  Finished updating "devDependencies"`, options)

@@ -58,7 +58,7 @@ describe('setup', () => {
       const paths = await readdir(folder)
 
       // Validate configuration setup
-      const templateFiles = ['.babelrc', '.editorconfig', '.eslintrc', 'jest.config.js', 'tsconfig.json']
+      const templateFiles = ['.babelrc', '.editorconfig', 'eslint.config.js', 'jest.config.js', 'tsconfig.json']
       for (const file of templateFiles) {
         expect(paths).toContain(file)
         expect(await readTextFile(`${folder}/${file}`)).toEqual(await readTextFile(`templates/node/${file}`))
@@ -97,20 +97,20 @@ describe('setup', () => {
         devDependencies: {
           '@babel/cli': expect.stringMatching(/^\d+\.\d+\.\d+$/),
           '@babel/core': expect.stringMatching(/^\d+\.\d+\.\d+$/),
-          '@babel/plugin-transform-class-properties': expect.stringMatching(/^\d+\.\d+\.\d+$/),
-          '@babel/plugin-transform-nullish-coalescing-operator': expect.stringMatching(/^\d+\.\d+\.\d+$/),
-          '@babel/plugin-transform-numeric-separator': expect.stringMatching(/^\d+\.\d+\.\d+$/),
-          '@babel/plugin-transform-optional-chaining': expect.stringMatching(/^\d+\.\d+\.\d+$/),
           '@babel/preset-env': expect.stringMatching(/^\d+\.\d+\.\d+$/),
           '@babel/preset-typescript': expect.stringMatching(/^\d+\.\d+\.\d+$/),
+          '@eslint/js': expect.stringMatching(/^\d+\.\d+\.\d+$/),
           '@types/jest': expect.stringMatching(/^\d+\.\d+\.\d+$/),
           '@typescript-eslint/eslint-plugin': expect.stringMatching(/^\d+\.\d+\.\d+$/),
-          '@typescript-eslint/parser': expect.stringMatching(/^\d+\.\d+\.\d+$/),
           'babel-jest': expect.stringMatching(/^\d+\.\d+\.\d+$/),
           eslint: expect.stringMatching(/^\d+\.\d+\.\d+$/),
           'eslint-config-prettier': expect.stringMatching(/^\d+\.\d+\.\d+$/),
+          'eslint-plugin-jest': expect.stringMatching(/^\d+\.\d+\.\d+$/),
           'eslint-plugin-prettier': expect.stringMatching(/^\d+\.\d+\.\d+$/),
+          'eslint-plugin-simple-import-sort': expect.stringMatching(/^\d+\.\d+\.\d+$/),
+          globals: expect.stringMatching(/^\d+\.\d+\.\d+$/),
           jest: expect.stringMatching(/^\d+\.\d+\.\d+$/),
+          'jest-circus': expect.stringMatching(/^\d+\.\d+\.\d+$/),
           prettier: expect.stringMatching(/^\d+\.\d+\.\d+$/),
           typescript: expect.stringMatching(/^\d+\.\d+\.\d+$/)
         }
