@@ -1,6 +1,6 @@
 {
   "name": "@connectedcars/setup",
-  "version": "0.23.4",
+  "version": "1.0.0",
   "description": "Connected Cars JavaScript/TypeScript development setup",
   "main": "build/dist/src/index.js",
   "engines": {
