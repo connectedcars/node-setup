@@ -1,6 +1,7 @@
 import fs from 'fs'
 import util from 'util'
 
+import { updateEslintrc } from './eslintrc'
 import { forceLog, log } from './log'
 import { updatePackageJson } from './package-json'
 import { fixTSConfigJson } from './tsconfig-json'
@@ -65,6 +66,10 @@ export async function updateTarget(
   log(`Started updating package.json`, options)
   const wasChanged = await updatePackageJson(templatePath, target, { ...options, force: true, onlyDeps: true })
   log(`Finished updating package.json`, options)
+
+  log(`Started updating .eslintrc`, options)
+  await updateEslintrc(templatePath, target, options)
+  log(`Finished updating .eslintrc`, options)
 
   if (wasChanged) {
     forceLog(`Dependencies in package.json was changed, run "npm install" to get node_modules up to date`)
