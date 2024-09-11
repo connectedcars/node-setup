@@ -56,7 +56,7 @@ export async function babelBuild(rootDirs: string[], outDir: string): Promise<Bu
             } else {
               entry.state = 'updated'
             }
-          } catch (e) {
+          } catch {
             entry.state = 'new'
           }
           buildList.push(entry)
@@ -113,7 +113,7 @@ export async function tscBuildTypings(): Promise<void> {
     await execFile('tsc', ['--emitDeclarationOnly'])
   } catch (e) {
     const execError = e as ExecFileError
-    throw new BuildErrorOutput(execError.stdout, e)
+    throw new BuildErrorOutput(execError.stdout, execError)
   }
 }
 

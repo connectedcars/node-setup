@@ -28,11 +28,12 @@ async function copyTemplateFiles(
     log(`  Started copying "${file.name}"`, options)
     const flags = force ? 0 : fs.constants.COPYFILE_EXCL
     await copyFile(`${templatePath}/${file.name}`, `${target}/${file.name}`, flags).catch(e => {
-      if (e.code === 'EEXIST') {
+      const error = e as NodeJS.ErrnoException
+      if (error.code === 'EEXIST') {
         // TODO: Merge with existing files if they already exists
         log(`  Skipped copying "${file.name}" because it already exists`, options)
       } else {
-        forceLog(`  Failed copying "${file.name}": ${e.message}`)
+        forceLog(`  Failed copying "${file.name}": ${error.message}`)
       }
     })
   }

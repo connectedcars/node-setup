@@ -22,10 +22,11 @@ export async function updateEslintrc(
       log(`  Finished copying "eslint.config.js"`, options)
     })
     .catch(e => {
-      if (e.code === 'EEXIST') {
+      const error = e as NodeJS.ErrnoException
+      if (error.code === 'EEXIST') {
         log(`  Skipped copying "eslint.config.js" because it already exists`, options)
       } else {
-        forceLog(`  Failed copying "eslint.config.js": ${e.message}`)
+        forceLog(`  Failed copying "eslint.config.js": ${error.message}`)
       }
     })
 
