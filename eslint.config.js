@@ -74,6 +74,7 @@ module.exports = [
           arrowParens: 'avoid'
         }
       ],
+      '@typescript-eslint/require-await': 'off',
       'simple-import-sort/imports': 'error',
       'simple-import-sort/exports': 'error'
     }
