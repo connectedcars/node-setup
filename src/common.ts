@@ -22,7 +22,7 @@ export async function readTextFile(path: string): Promise<string> {
 
 export async function readJsonFile<T = unknown>(path: string): Promise<T> {
   const content = await readFile(path, 'utf8')
-  return JSON.parse(content)
+  return JSON.parse(content) as T
 }
 
 interface FolderTextFiles {

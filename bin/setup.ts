@@ -88,6 +88,7 @@ async function main() {
   }
   for (const cmd in commands) {
     const { desc, fn } = commands[cmd]
+    // eslint-disable-next-line @typescript-eslint/no-misused-promises
     args.command(cmd, desc, fn)
   }
 

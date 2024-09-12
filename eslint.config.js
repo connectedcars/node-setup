@@ -10,7 +10,7 @@ module.exports = [
     ignores: ['**/*.d.ts']
   },
   js.configs.recommended,
-  ...tsEslint.configs.recommended,
+  ...tsEslint.configs.recommendedTypeChecked,
   eslintPluginPrettierRecommended,
   eslintPluginJest.configs['flat/recommended'],
   {
@@ -29,23 +29,15 @@ module.exports = [
       }
     },
     rules: {
-      '@typescript-eslint/await-thenable': 'error',
       '@typescript-eslint/explicit-function-return-type': ['error', { allowExpressions: true }],
       '@typescript-eslint/explicit-member-accessibility': 'error',
-      '@typescript-eslint/member-ordering': 'error',
-      '@typescript-eslint/no-dupe-class-members': ['error'],
-      '@typescript-eslint/no-extra-non-null-assertion': 'error',
-      '@typescript-eslint/no-floating-promises': 'error',
-      '@typescript-eslint/no-non-null-asserted-optional-chain': 'error',
-      '@typescript-eslint/no-require-imports': 'error',
-      '@typescript-eslint/only-throw-error': 'error',
-      '@typescript-eslint/parameter-properties': 'error',
-      '@typescript-eslint/restrict-plus-operands': 'error',
       'func-style': ['error', 'declaration'],
       'jest/consistent-test-it': ['warn', { fn: 'it', withinDescribe: 'it' }],
+      '@typescript-eslint/member-ordering': 'error',
       'no-console': 'error',
       // note you must disable the base rule as it can report incorrect errors
       'no-dupe-class-members': 'off',
+      '@typescript-eslint/no-dupe-class-members': ['error'],
       'no-restricted-imports': ['error', { patterns: ['@connectedcars/*/build/dist/*'] }],
       'no-restricted-syntax': [
         'error',
@@ -71,6 +63,7 @@ module.exports = [
         }
       ],
       'object-shorthand': 'warn',
+      '@typescript-eslint/parameter-properties': 'error',
       'prettier/prettier': [
         'error',
         {
@@ -90,7 +83,13 @@ module.exports = [
     rules: {
       '@typescript-eslint/explicit-function-return-type': 'off',
       '@typescript-eslint/no-explicit-any': 'off',
-      '@typescript-eslint/no-non-null-assertion': 'off'
+      '@typescript-eslint/no-non-null-assertion': 'off',
+      '@typescript-eslint/no-unsafe-argument': 'off',
+      '@typescript-eslint/no-unsafe-assignment': 'off',
+      '@typescript-eslint/no-unsafe-call': 'off',
+      '@typescript-eslint/no-unsafe-enum-comparison': 'off',
+      '@typescript-eslint/no-unsafe-member-access': 'off',
+      '@typescript-eslint/no-unsafe-return': 'off'
     }
   },
   {
