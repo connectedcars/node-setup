@@ -74,6 +74,7 @@ module.exports = [
           arrowParens: 'avoid'
         }
       ],
+      '@typescript-eslint/require-await': 'off',
       'simple-import-sort/imports': 'error',
       'simple-import-sort/exports': 'error'
     }
@@ -82,6 +83,7 @@ module.exports = [
     files: ['**/*.test.ts', '**/*.it.ts', 'bin/*.ts'],
     rules: {
       '@typescript-eslint/explicit-function-return-type': 'off',
+      '@typescript-eslint/no-base-to-string': 'off',
       '@typescript-eslint/no-explicit-any': 'off',
       '@typescript-eslint/no-non-null-assertion': 'off',
       '@typescript-eslint/no-unsafe-argument': 'off',
