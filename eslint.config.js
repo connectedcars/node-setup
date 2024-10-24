@@ -60,6 +60,22 @@ module.exports = [
           selector: "CallExpression[callee.property.name='ignore'][callee.object.callee.property.name='onConflict']",
           message:
             "Using '.ignore()' is disallowed as it will ignore all errors in MySQL (as it will generate a query using 'insert ignore'). Use '.merge()' to create a noop instead."
+        },
+        // Incorrect: [3, 2, 1].sort()
+        // Incorrect: array1.sort()
+        // Correct:   [3, 2, 1].toSorted()
+        // Correct:   array1.toSorted()
+        {
+          selector: "CallExpression[callee.property.name='sort']",
+          message: 'Using Array.sort() is error-prone because it sorts in place. Use Array.toSorted() instead.'
+        },
+        // Incorrect: [3, 2, 1].reverse()
+        // Incorrect: array1.reverse()
+        // Correct:   [3, 2, 1].toReversed()
+        // Correct:   array1.toReversed()
+        {
+          selector: "CallExpression[callee.property.name='reverse']",
+          message: 'Using Array.reverse() is error-prone because it reverses in place. Use Array.toReversed() instead.'
         }
       ],
       'object-shorthand': 'warn',
