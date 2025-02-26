@@ -1,16 +1,9 @@
 import * as babel from '@babel/core'
 import childProcess from 'child_process'
-import fs from 'fs'
+import fs from 'fs/promises'
 import path from 'path'
 import util from 'util'
 
-const readdirAsync = util.promisify(fs.readdir)
-const statAsync = util.promisify(fs.stat)
-const writeFileAsync = util.promisify(fs.writeFile)
-const chmodAsync = util.promisify(fs.chmod)
-const mkdirAsync = util.promisify(fs.mkdir)
-const utimes = util.promisify(fs.utimes)
-const rename = util.promisify(fs.rename)
 const execFile = util.promisify(childProcess.execFile)
 
 export interface BuildEntry {
@@ -30,9 +23,9 @@ export async function babelBuild(rootDirs: string[], outDir: string): Promise<Bu
     const dirs: string[] = [fullRootDir]
     while (dirs.length > 0) {
       const dir = dirs.shift() as string
-      for (const file of await readdirAsync(dir)) {
+      for (const file of await fs.readdir(dir)) {
         const inFile = path.resolve(dir, file)
-        const inStat = await statAsync(inFile)
+        const inStat = await fs.stat(inFile)
         if (inStat.isDirectory()) {
           dirs.push(inFile)
         } else if (inStat.isFile()) {
@@ -50,7 +43,7 @@ export async function babelBuild(rootDirs: string[], outDir: string): Promise<Bu
             state: ''
           }
           try {
-            const outStat = await statAsync(outFile)
+            const outStat = await fs.stat(outFile)
             if (inStat.mtime.getTime() === outStat.mtime.getTime() && inStat.mode === outStat.mode) {
               entry.state = 'same'
             } else {
@@ -88,13 +81,13 @@ export async function babelBuild(rootDirs: string[], outDir: string): Promise<Bu
     if (result.map) {
       result.map.file = path.basename(build.outFile)
     }
-    await mkdirAsync(path.dirname(build.outFile), { recursive: true })
-    await writeFileAsync(mapFile, JSON.stringify(result.map))
+    await fs.mkdir(path.dirname(build.outFile), { recursive: true })
+    await fs.writeFile(mapFile, JSON.stringify(result.map))
     const tmpOutFile = build.outFile + '.tmp'
-    await writeFileAsync(tmpOutFile, result.code)
-    await chmodAsync(tmpOutFile, build.mode)
-    await utimes(tmpOutFile, build.mtime, build.mtime)
-    await rename(tmpOutFile, build.outFile)
+    await fs.writeFile(tmpOutFile, result.code)
+    await fs.chmod(tmpOutFile, build.mode)
+    await fs.utimes(tmpOutFile, build.mtime, build.mtime)
+    await fs.rename(tmpOutFile, build.outFile)
   }
   return buildList
 }
@@ -111,16 +104,22 @@ interface ExecFileError extends Error {
 export async function tscBuildTypings(): Promise<void> {
   try {
     await execFile('tsc', ['--emitDeclarationOnly'])
-  } catch (e) {
-    const execError = e as ExecFileError
-    throw new BuildErrorOutput(execError.stdout, execError)
+  } catch (error) {
+    const execError = error as ExecFileError
+    throw new BuildErrorOutput(execError.stdout, execError.stderr, execError)
   }
 }
 
 export class BuildErrorOutput extends Error {
-  public error: Error
-  public constructor(message: string, e: Error) {
-    super(message)
-    this.error = e
+  public readonly stdout: string
+  public readonly stderr: string
+  public readonly error: Error
+
+  public constructor(stdout: string, stderr: string, error: Error) {
+    super(stdout)
+
+    this.stdout = stdout
+    this.stderr = stderr
+    this.error = error
   }
 }
