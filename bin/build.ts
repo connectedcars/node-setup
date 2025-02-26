@@ -20,6 +20,7 @@ async function main(argv: string[]): Promise<number> {
 
   // TODO: Read root dirs from tsconfig
   const promises: Array<Promise<void>> = []
+
   promises.push(
     (async () => {
       await babelBuild(
@@ -43,11 +44,21 @@ main(process.argv)
   .then(exitCode => {
     process.exit(exitCode)
   })
-  .catch(e => {
-    if (e instanceof BuildErrorOutput) {
-      console.error(e.message)
+  .catch(error => {
+    if (error instanceof BuildErrorOutput) {
+      if (error.stdout.length === 0 && error.stderr.length === 0) {
+        console.error('No stdout or stderr output from process')
+      } else {
+        if (error.stdout.length > 0) {
+          console.error(error.stdout)
+        }
+
+        if (error.stderr.length > 0) {
+          console.error(error.stderr)
+        }
+      }
     } else {
-      console.error(e)
+      console.error(error)
     }
     process.exit(255)
   })
