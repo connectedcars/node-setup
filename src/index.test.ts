@@ -74,7 +74,7 @@ describe('setup', () => {
         description: '',
         main: 'index.js',
         engines: {
-          node: '>=20.0.0'
+          node: '>=22.0.0'
         },
         scripts: {
           test: 'echo "Error: no test specified" && exit 1',
