@@ -26,8 +26,7 @@ module.exports = [
       sourceType: 'commonjs',
       parserOptions: {
         // https://typescript-eslint.io/blog/parser-options-project-true/
-        project: true,
-        tsconfigRootDir: '../../..' // This file is located in node_modules/@connectedcars/setup
+        project: true
       }
     },
     rules: {
