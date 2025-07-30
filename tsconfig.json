@@ -7,7 +7,6 @@
       "esnext.bigint"
     ],
     "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
     "strict": true,
     "useUnknownInCatchVariables": false,
     "noUnusedLocals": false,
@@ -22,10 +21,5 @@
     "outDir": "build/dist",
     "rootDir": "./",
     "incremental": true
-  },
-  "exclude": [
-    "node_modules",
-    "build",
-    "coverage"
-  ]
+  }
 }

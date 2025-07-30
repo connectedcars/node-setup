@@ -1,7 +1,7 @@
 import fs from 'fs'
 import util from 'util'
 
-import { updateEslintrc } from './eslintrc'
+import { updateEslintConfig } from './eslint-config-js'
 import { forceLog, log } from './log'
 import { updatePackageJson } from './package-json'
 import { fixTSConfigJson } from './tsconfig-json'
@@ -69,7 +69,7 @@ export async function updateTarget(
   log(`Finished updating package.json`, options)
 
   log(`Started updating .eslintrc`, options)
-  await updateEslintrc(templatePath, target, options)
+  await updateEslintConfig(templatePath, target, options)
   log(`Finished updating .eslintrc`, options)
 
   if (wasChanged) {
@@ -87,4 +87,8 @@ export async function fixTarget(
   log(`Started updating tsconfig.json`, options)
   await fixTSConfigJson(templatePath, target, options)
   log(`Finished updating tsconfig.json`, options)
+
+  log(`Started updating .eslintrc`, options)
+  await updateEslintConfig(templatePath, target, options)
+  log(`Finished updating .eslintrc`, options)
 }
