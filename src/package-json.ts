@@ -17,6 +17,7 @@ const legacyPackages = [
 export interface StringMap {
   [key: string]: string
 }
+
 export interface PackageJson {
   dependencies: StringMap
   devDependencies: StringMap
@@ -29,9 +30,9 @@ export interface PackageJson {
 
 async function readPackageJson(filePath: string): Promise<PackageJson> {
   const packageJson = (await readJsonFile(filePath)) as PackageJson
-  packageJson.dependencies = packageJson.dependencies ? packageJson.dependencies : {}
-  packageJson.devDependencies = packageJson.devDependencies ? packageJson.devDependencies : {}
-  packageJson.scripts = packageJson.scripts ? packageJson.scripts : {}
+  packageJson.dependencies = packageJson.dependencies ?? {}
+  packageJson.devDependencies = packageJson.devDependencies ?? {}
+  packageJson.scripts = packageJson.scripts ?? {}
   return packageJson
 }
 
@@ -65,8 +66,7 @@ export async function updatePackageJson(
       continue
     }
     if (force || !packageJson.devDependencies[dependency]) {
-      const templateVersion = templatePackageJson.devDependencies[dependency]
-      packageJson.devDependencies[dependency] = templateVersion
+      packageJson.devDependencies[dependency] = templatePackageJson.devDependencies[dependency]
     }
   }
   // Remove legacy dependencies

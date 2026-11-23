@@ -5,11 +5,11 @@
   "main": "build/dist/src/index.js",
   "types": "build/dist/src/index.d.ts",
   "engines": {
-    "node": ">=22.0.0"
+    "node": ">=22.0.0",
+    "npm": ">=11.10.0"
   },
   "scripts": {
     "test": "TZ=UTC jest",
-    "cov": "TZ=UTC jest --coverage=true",
     "build": "build src",
     "build:js": "build --skip-typings src",
     "build:types": "tsc --noEmit",

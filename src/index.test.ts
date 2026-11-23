@@ -4,6 +4,7 @@ import util from 'util'
 
 import { createTemporaryFolder, readJsonFile, readTextFile } from './common'
 import { initTarget } from './index'
+import { readNpmRc } from './npmrc'
 import { PackageJson } from './package-json'
 
 const copyFile = util.promisify(fs.copyFile)
@@ -58,7 +59,14 @@ describe('setup', () => {
       const paths = await readdir(folder)
 
       // Validate configuration setup
-      const templateFiles = ['.babelrc', '.editorconfig', 'eslint.config.js', 'jest.config.js', 'tsconfig.json']
+      const templateFiles = [
+        '.babelrc',
+        '.editorconfig',
+        'eslint.config.js',
+        'jest.config.js',
+        'tsconfig.json',
+        '.npmrc'
+      ]
       for (const file of templateFiles) {
         expect(paths).toContain(file)
         expect(await readTextFile(`${folder}/${file}`)).toEqual(await readTextFile(`templates/node/${file}`))
@@ -78,7 +86,6 @@ describe('setup', () => {
         },
         scripts: {
           test: 'echo "Error: no test specified" && exit 1',
-          cov: 'TZ=UTC jest --coverage=true',
           build: 'build src',
           'build:js': expect.stringMatching(/.+/),
           'build:types': 'tsc --noEmit',
@@ -160,6 +167,19 @@ describe('setup', () => {
       expect(pathsPostInstall).toContain('node_modules')
       expect(pathsPostInstall).toContain('package.json')
       expect(pathsPostInstall).toContain('package-lock.json')
+      expect(pathsPostInstall).toContain('.npmrc')
+
+      const npmrc = await readNpmRc(`${folder}/.npmrc`)
+
+      expect(npmrc).toEqual([
+        '; Enforce minimum release age for packages, exclude our own packages',
+        'min-release-age=7',
+        'min-release-age-exclude[]=@connectedcars/*',
+        '',
+        '; Enforce `engine` (node and npm versions) requirements from package.json',
+        'engine-strict=true',
+        ''
+      ])
     }, 120000)
 
     it('update', async () => {
@@ -180,6 +200,12 @@ describe('setup', () => {
       packageJson.devDependencies['typescript'] = '1.3.37'
       await writeFile(`${folder}/package.json`, JSON.stringify(packageJson, null, 2), 'utf8')
 
+      const npmrc = await readNpmRc(`${folder}/.npmrc`)
+      npmrc!.push('min-release-age=5')
+      npmrc!.push('min-release-age-exclude[]=@some-org/*')
+      npmrc!.push('engine-strict=false')
+      await writeFile(`${folder}/.npmrc`, npmrc!.join('\n'), 'utf8')
+
       // Run `setup update -f` and check output
       try {
         await execFile('./node_modules/.bin/setup', ['update', '-f'], { cwd: folder })
@@ -199,6 +225,19 @@ describe('setup', () => {
       expect(result.devDependencies['@babel/core']).not.toEqual('1.3.37')
       expect(result.devDependencies['eslint']).not.toEqual('1.3.37')
       expect(result.devDependencies['typescript']).not.toEqual('1.3.37')
+
+      const updatedNpmrc = await readNpmRc(`${folder}/.npmrc`)
+
+      expect(updatedNpmrc).toEqual([
+        '; Enforce minimum release age for packages, exclude our own packages',
+        'min-release-age=7',
+        'min-release-age-exclude[]=@connectedcars/*',
+        '',
+        '; Enforce `engine` (node and npm versions) requirements from package.json',
+        'engine-strict=true',
+        '',
+        'min-release-age-exclude[]=@some-org/*'
+      ])
     }, 30000)
 
     it('should fix tsconfig.json with a manual run', async () => {
