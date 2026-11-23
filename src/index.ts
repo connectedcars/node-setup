@@ -3,7 +3,7 @@ import util from 'util'
 
 import { updateEslintConfig } from './eslint-config-js'
 import { forceLog, log } from './log'
-import { updatePackageJson } from './package-json'
+import { createOrUpdateNpmRc, updatePackageJson } from './package-json'
 import { fixTSConfigJson } from './tsconfig-json'
 
 const copyFile = util.promisify(fs.copyFile)
@@ -48,6 +48,10 @@ export async function initTarget(
   await copyTemplateFiles(templatePath, target, templateFilesIgnore, options)
   log(`Finished copying template files`, options)
 
+  log('Started updating .npmrc', options)
+  await createOrUpdateNpmRc(templatePath, target)
+  log('Finished updating .npmrc', options)
+
   log(`Started updating package.json`, options)
   const wasChanged = await updatePackageJson(templatePath, target, options)
   log(`Finished updating package.json`, options)
@@ -64,6 +68,10 @@ export async function updateTarget(
   target: string,
   options: { [key: string]: unknown } = {}
 ): Promise<void> {
+  log('Started updating .npmrc', options)
+  await createOrUpdateNpmRc(templatePath, target)
+  log('Finished updating .npmrc', options)
+
   log(`Started updating package.json`, options)
   const wasChanged = await updatePackageJson(templatePath, target, { ...options, force: true, onlyDeps: true })
   log(`Finished updating package.json`, options)
