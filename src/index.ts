@@ -3,7 +3,8 @@ import util from 'util'
 
 import { updateEslintConfig } from './eslint-config-js'
 import { forceLog, log } from './log'
-import { createOrUpdateNpmRc, updatePackageJson } from './package-json'
+import { createOrUpdateNpmRc } from './npmrc'
+import { updatePackageJson } from './package-json'
 import { fixTSConfigJson } from './tsconfig-json'
 
 const copyFile = util.promisify(fs.copyFile)

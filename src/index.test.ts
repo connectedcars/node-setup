@@ -4,7 +4,8 @@ import util from 'util'
 
 import { createTemporaryFolder, readJsonFile, readTextFile } from './common'
 import { initTarget } from './index'
-import { PackageJson, readNpmRc } from './package-json'
+import { readNpmRc } from './npmrc'
+import { PackageJson } from './package-json'
 
 const copyFile = util.promisify(fs.copyFile)
 const execFile = util.promisify(childProcess.execFile)
@@ -200,10 +201,10 @@ describe('setup', () => {
       await writeFile(`${folder}/package.json`, JSON.stringify(packageJson, null, 2), 'utf8')
 
       const npmrc = await readNpmRc(`${folder}/.npmrc`)
-      npmrc.push('min-release-age=5')
-      npmrc.push('min-release-age-exclude[]=@some-org/*')
-      npmrc.push('engine-strict=false')
-      await writeFile(`${folder}/.npmrc`, npmrc.join('\n'), 'utf8')
+      npmrc!.push('min-release-age=5')
+      npmrc!.push('min-release-age-exclude[]=@some-org/*')
+      npmrc!.push('engine-strict=false')
+      await writeFile(`${folder}/.npmrc`, npmrc!.join('\n'), 'utf8')
 
       // Run `setup update -f` and check output
       try {
